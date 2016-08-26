@@ -1,88 +1,61 @@
 import React, {Component} from 'react'
 
-import BannerContainer from '../containers/BannerContainer'
-import HelloGatesContainer from '../containers/HelloGatesContainer'
-import VampiresContainer from '../containers/VampiresContainer'
-import BinaryNumberContainer from '../containers/BinaryNumberContainer'
-import Adder1Container from '../containers/Adder1Container'
+const renderNodes = () => {
+
+}
+
+const con = {
+  input: NodeA,
+  output: NodeB,
+  state: "INACTIVE"
+}
+
+const NodeA = {
+  output: con,
+  pos: { x:100, y:200 }
+}
+
+const NodeB = {
+  input: con,
+  pos: { x:600, y:600 }
+}
+
+const keyframe = `@keyframes test {
+  from {
+    cx: 100;
+    cy: 200;
+  }
+
+  to {
+    cx: 600;
+    cy: 600;
+  }
+}`
+
+const style = {
+  animationName: 'test',
+  animationDuration: '4s',
+  'transition-timing-function': 'ease-in-out'
+}
+
 
 class App extends Component {
+  componentDidMount() {
+    console.log('mounted')
+    document.styleSheets[0].insertRule(keyframe, document.styleSheets[0].rules.length);
+  }
   render() {
     return (
-    	<div>
-            <BannerContainer />
-    		<div className="body-copy body-copy-container">
-    			<p>
-                The microprocessor, the beating heart inside every laptop and smartphone,
-                is a fantastically complex machine built out of nearly  a billion individual parts. The amazing thing
-                is that there are only a few different kinds of parts, and each one
-                is really simple.
-                </p>
+      <svg width="1000" height="1000">
+        <g>
+          <line x1={NodeA.pos.x} y1={NodeA.pos.y} x2={NodeB.pos.x} y2={NodeB.pos.y} stroke="black" stroke-width="2"/>
+          <circle cx={NodeA.pos.x} cy={NodeA.pos.y} r="40" stroke="black" strokeWidth="3" fill="red" />
+          <circle cx={NodeB.pos.x} cy={NodeB.pos.y} r="40" stroke="black" strokeWidth="3" fill="red" />
 
-                <p>
-                This is the story of how these simple components, called logic
-                gates combine to build the tiny programmable computing machines we call
-                microprocessors.
-                </p>
+          <circle cx={NodeA.pos.x} cy={NodeA.pos.y} r="10" style={style} stroke="black" strokeWidth="3" fill="black" />
 
-                <h1 className="paragraph-title-copy paragraph-title-spacer">Hello gates</h1>
-
-                <p>
-                Logic gates are the Lego building blocks of microprocessors.
-                They&#39;re binary devices that do just a little bit of logic. They come in a handful of flavors
-                but for now we&#39;re only going to need four. Meet OR, AND, NOT, and XOR.
-                </p>
-
-                <p>
-                These guys are binary, which means their inputs and outputs can only be in
-                one of two states: On or Off. Each gate has an output that depends on its 
-                two inputs and each type of gate responds differently to its inputs. Play with the gates by 
-                turning their inputs on and off.
-                </p>
-
-
-    		</div>
-            <HelloGatesContainer />
-
-            <div className="body-copy body-copy-container">
-             <h1 className="paragraph-title-copy paragraph-title-spacer">Combining gates</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sag
-                ittis pretium vestibulum. Vestibulum nec blandit mauris. Phasellus 
-                nec imperdiet est. Integer eu posuere sem. Duis suscipit fringilla 
-                lacus, id viverra justo tempor a. Curabitur nec sem convallis neque 
-                mattis cursus. Mauris feugiat nec dolor a eleifend. Donec non urna 
-                pulvinar, ultrices nulla in, eleifend dolor. Fusce et lectus nisl.
-                </p>
-            </div>
-            <VampiresContainer />
-
-
-            <div className="body-copy body-copy-container">
-                <h1 className="paragraph-title-copy paragraph-title-spacer">Speaking numbers</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sag
-                ittis pretium vestibulum. Vestibulum nec blandit mauris. Phasellus 
-                nec imperdiet est. Integer eu posuere sem. Duis suscipit fringilla 
-                lacus, id viverra justo tempor a. Curabitur nec sem convallis neque 
-                mattis cursus. Mauris feugiat nec dolor a eleifend. Donec non urna 
-                pulvinar, ultrices nulla in, eleifend dolor. Fusce et lectus nisl.
-                </p>
-            </div>
-            <BinaryNumberContainer />
-
-
-            <div className="body-copy body-copy-container">
-                <h1 className="paragraph-title-copy paragraph-title-spacer">Adding numbers</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sag
-                ittis pretium vestibulum. Vestibulum nec blandit mauris. Phasellus 
-                nec imperdiet est. Integer eu posuere sem. Duis suscipit fringilla 
-                lacus, id viverra justo tempor a. Curabitur nec sem convallis neque 
-                mattis cursus. Mauris feugiat nec dolor a eleifend. Donec non urna 
-                pulvinar, ultrices nulla in, eleifend dolor. Fusce et lectus nisl.
-                </p>
-            </div>
-            <Adder1Container />
-            
-    	</div>
+        </g>
+      </svg>
     )
   }
 }
