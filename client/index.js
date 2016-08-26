@@ -10,9 +10,9 @@ import AppContainer from './containers/AppContainer'
 // import css
 import './styles/main.scss'
 
-// const appReducer = combineReducers({
-//   circuits: circuitsReducer
-// })
+const appReducer = combineReducers({
+  // circuits: circuitsReducer
+})
 
 const createStoreWithMiddleware = applyMiddleware(thunkMiddleware)(createStore)
 const appStore = createStoreWithMiddleware(appReducer)
