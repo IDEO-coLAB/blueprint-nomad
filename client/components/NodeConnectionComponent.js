@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 
 import { generateTranslationAnimation, insertAnimations } from './../utils/utils'
-import { CONNECTION_ANIMATION_TIME } from './../constants/constants'
+import { CONNECTION_ANIMATION_TIME } from './../constants/settings'
 
 
 class NodeConnection extends Component {

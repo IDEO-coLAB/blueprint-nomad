@@ -1,37 +1,56 @@
 import React, {Component} from 'react'
+import { connect } from 'react-redux'
+import R from 'ramda'
 
+import NodeComponent from './../components/NodeComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
+import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 
-const con = {
-  input: NodeA,
-  output: NodeB,
-  state: "INACTIVE"
-}
-
-const NodeA = {
-  output: con,
-  pos: {  x:100, y:200 }
-}
-
-const NodeB = {
-  input: con,
-  pos: { x:600, y:600 }
+function mapStateToProps(state, ownProps) {
+  return {
+    scenes: state.scenes
+  }
 }
 
 class App extends Component {
   render() {
+    let activeScene = this.props.scenes.activeScene
+    let allObjects = this.props.scenes.scenes[activeScene].objects
+    let renderConnection = _renderConnection(allObjects)
+
+    let renderedNodes = [].concat(
+      R.map(renderConnection, R.filter(isConnection,  allObjects)),
+      R.map(renderNode,       R.filter(isNode,        allObjects))
+    )
+
+    console.log(renderedNodes)
+
     return (
       <svg width="1000" height="1000">
-        <g>
-          <circle cx={NodeA.pos.x} cy={NodeA.pos.y} r="40" stroke="black" strokeWidth="3" fill="red" />
-          <circle cx={NodeB.pos.x} cy={NodeB.pos.y} r="40" stroke="black" strokeWidth="3" fill="red" />
-
-          <NodeConnectionComponent x1={NodeA.pos.x} x2={NodeB.pos.x} y1={NodeA.pos.y} y2={NodeB.pos.y} />
-
-        </g>
+        { renderedNodes }
       </svg>
     )
   }
 }
 
-module.exports = App
+// helpers
+let connectionInput = connection => { return R.head(connection.inputs) }
+let connectionOutput = connection => { return R.head(connection.outputs) }
+
+// curried
+let _getObjectWithId = R.curry((objects, id) => { return R.find(R.propEq('id', id), objects) })
+let isNode = R.propEq('type', SCENE_NODE)
+let isConnection = R.propEq('type', SCENE_CONNECTION)
+
+// rendering helpers
+let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} /> }
+
+// curried with objects first
+let _renderConnection = R.curry((objects, connection) => {
+  let getFromId = _getObjectWithId(objects)
+  let cin = getFromId(connectionInput(connection))
+  let cout = getFromId(connectionOutput(connection))
+  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} />
+})
+
+export default connect(mapStateToProps)(App)
