@@ -1,31 +1,37 @@
 import R from 'ramda'
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
+import { SET_NODE_STATE, SET_CONNECTION_STATE } from './actions'
 import { initialScenes } from './../constants/scenes'
 
 // top level reducer
 export let sceneReducer = function(appState=initialScenes, action) {
-  return appState
+	switch (action.type) {
+		case SET_NODE_STATE:
+		case SET_CONNECTION_STATE: 
+			let cloned = R.clone(appState)
+			let obj = getObject(cloned, cloned.activeScene, action.objId)
+			obj.state = action.state
+			return cloned
+		default:
+			return appState
+	}
 }
 
-// top level reducer function for a single circuit instance
-// let circuitReducer = function(appState, action) {
-//   switch (action.type) {
-//     case NODE_SET_STATE_ACTION:
-//       let nodeId = action.nodeId
-//       let boolState = action.boolState
-//       let newAppState = Object.assign({}, appState)
-//       newAppState.allNodes = appState.allNodes.slice(0) // shallow copy array
-//       newAppState.allNodes[nodeId] = Object.assign({}, appState.allNodes[nodeId])
+export let dispatchSceneCommands = commandList => {
+	return dispatch => {
+		if (R.isEmpty(commandList)) { return Promise.resolve() }
+		let headFxn = R.head(commandList)
+		headFxn(dispatch).then(() => {
+			return dispatchSceneCommands(R.tail(commandList))
+		})
+	}
+}
 
-//       newAppState.allNodes[nodeId].state = boolState
-//       return addNodeToChangedNodes(newAppState, newAppState.allNodes[nodeId])
-//     case PROPOGATE_CIRCUIT:
-//       return propogateCircuit(appState)      
-//     default:
-//       return appState
-//   }
-// }
+let getObject = (objects, sceneId, id) => {
+	let scene = objects.scenes[sceneId]
+	return R.find(R.propEq('id', id), scene.objects)
+}
 
 
 

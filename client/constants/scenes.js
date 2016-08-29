@@ -31,7 +31,7 @@ export const initialScenes = {
 					state: RESTING,
 					inputs: [1],
 					outputs: [],
-					pos: { x: 600, y: 600 }
+					pos: { x: 1200, y: 600 }
 				},
 				{
 					id: 3,
