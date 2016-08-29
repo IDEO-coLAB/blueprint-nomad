@@ -17,7 +17,6 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     startScenes: function() {
-      debugger
       dispatch(dispatchSceneCommands(sceneCommands))
     }
   }
@@ -37,8 +36,6 @@ class App extends Component {
       R.map(renderConnection, R.filter(isConnection,  allObjects)),
       R.map(renderNode,       R.filter(isNode,        allObjects))
     )
-
-    console.log(renderedNodes)
 
     return (
       <svg width="2000" height="1000">

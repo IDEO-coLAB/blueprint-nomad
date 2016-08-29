@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import R from 'ramda'
 
 import { generateTranslationAnimation, insertAnimations } from './../utils/utils'
-import { CONNECTION_ANIMATION_TIME } from './../constants/settings'
+import { SETTINGS } from './../constants/settings'
 import { RESTING, MESSAGING } from './../constants/constants'
 
 
@@ -18,7 +18,7 @@ class NodeConnection extends Component {
       this.props.y1,
       this.props.x2,
       this.props.y2,
-      CONNECTION_ANIMATION_TIME)
+      SETTINGS.timeouts.connectionMessaging)
     insertAnimations(this.keyframe.keyframeRule)
   }
 

@@ -1,5 +1,5 @@
 // constants used by actions
-export const RESTING = 'AT_REST'
+export const RESTING = 'RESTING'
 export const MESSAGING = 'MESSAGING'
 
 // types of objects that can appear in a scene

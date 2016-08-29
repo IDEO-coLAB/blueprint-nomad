@@ -20,12 +20,18 @@ export let sceneReducer = function(appState=initialScenes, action) {
 
 export let dispatchSceneCommands = commandList => {
 	return dispatch => {
-		if (R.isEmpty(commandList)) { return Promise.resolve() }
-		let headFxn = R.head(commandList)
-		headFxn(dispatch).then(() => {
-			return dispatchSceneCommands(R.tail(commandList))
-		})
+		recursiveDispatchSceneCommands(dispatch, commandList)
 	}
+}
+
+// returns promise
+let recursiveDispatchSceneCommands = (dispatch, commandList) => {
+	if (R.isEmpty(commandList)) { return Promise.resolve() }
+	let headFxn = R.head(commandList)
+	let tail = R.tail(commandList)
+	return headFxn(dispatch).then(() => {
+		return recursiveDispatchSceneCommands(dispatch, tail)
+	})
 }
 
 let getObject = (objects, sceneId, id) => {

@@ -52,8 +52,8 @@ export const initialScenes = {
 					id: 5,
 					type: SCENE_CONNECTION,
 					state: RESTING,
-					inputs: [0],
-					outputs: [3]
+					inputs: [3],
+					outputs: [0]
 				},
 			]
 		}
