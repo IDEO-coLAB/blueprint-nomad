@@ -26,7 +26,6 @@ export let dispatchSceneCommands = commandList => {
 
 // returns promise
 let recursiveDispatchSceneCommands = (dispatch, commandList) => {
-	debugger
 	if (R.isEmpty(commandList)) { return Promise.resolve() }
 	
 	let head = R.head(commandList)
