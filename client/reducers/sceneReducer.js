@@ -26,10 +26,24 @@ export let dispatchSceneCommands = commandList => {
 
 // returns promise
 let recursiveDispatchSceneCommands = (dispatch, commandList) => {
+	debugger
 	if (R.isEmpty(commandList)) { return Promise.resolve() }
-	let headFxn = R.head(commandList)
+	
+	let head = R.head(commandList)
 	let tail = R.tail(commandList)
-	return headFxn(dispatch).then(() => {
+
+	// array means do things simultaneously
+	if (R.isArrayLike(head)) {
+		let promises = R.map((fn) => {
+			return fn(dispatch)
+		}, head)
+
+		return Promise.all(promises).then(() => {
+			return recursiveDispatchSceneCommands(dispatch, tail)
+		})
+	}
+
+	return head(dispatch).then(() => {
 		return recursiveDispatchSceneCommands(dispatch, tail)
 	})
 }
