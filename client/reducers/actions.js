@@ -46,6 +46,16 @@ let setConnectionState = (connection, state, timeout) => {
 	}
 }
 
+export let pause = (timeout) => {
+	return dispatch => {
+		return new Promise((resolve, reject) => {
+			setInterval(() => {
+				resolve()
+			}, timeout*1000)
+		})
+	}
+}
+
 
 
 

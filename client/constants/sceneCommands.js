@@ -1,9 +1,10 @@
-import { nodeOn, nodeOff, connectionOn, connectionOff } from './../reducers/actions'
+import { nodeOn, nodeOff, connectionOn, connectionOff, pause } from './../reducers/actions'
 import { RESTING, MESSAGING } from './constants'
 
 export let sceneCommands = [
 	nodeOn(0),
 	[connectionOn(4), connectionOn(1), connectionOn(5)],
+	pause(2),
 	[connectionOff(4), connectionOff(1)],
 	connectionOn(5),
 	connectionOff(5)
