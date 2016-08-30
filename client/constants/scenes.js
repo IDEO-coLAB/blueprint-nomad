@@ -20,7 +20,7 @@ let makeScene = sceneIn => {
 	let connectionList = R.map((node) => {
 		return R.map((outputNodeId) => {
 			return {
-				id: idx++,
+				id: String(node.id) + '-' + String(outputNodeId),
 				type: SCENE_CONNECTION,
 				state: RESTING,
 				inputs: [ node.id ],
@@ -30,6 +30,7 @@ let makeScene = sceneIn => {
 	}, nodeList)
 
 	let objectList = R.flatten(R.concat(nodeList, connectionList))
+	console.log(objectList)
 	return objectList
 }
 

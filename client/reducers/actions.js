@@ -56,6 +56,20 @@ export let pause = (timeout) => {
 	}
 }
 
+export let delay = (command, delay) => {
+	return dispatch => {
+		return new Promise((resolve, reject) => {
+			setInterval(() => {
+				resolve()
+			}, delay*1000)
+		}).then(() => {
+			return command(dispatch)
+		})
+	}
+}
+
+
+
 
 
 
