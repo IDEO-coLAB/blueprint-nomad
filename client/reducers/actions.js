@@ -89,6 +89,13 @@ export let delay = (command, delay) => {
 	}
 }
 
+export let activeScene = scene => {
+	return dispatch => {
+		dispatch({ type: SET_ACTIVE_SCENE, scene })
+		return Promise.resolve()
+	}
+}
+
 
 // redux reducer actions
 export const SET_NODE_STATE = 'SET_NODE_STATE'
@@ -96,3 +103,4 @@ export const SET_NODE_CAPTION = 'SET_NODE_CAPTION'
 export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE'
 export const SET_OVERLAY = 'SET_OVERLAY'
 export const SET_INTRO = 'SET_INTRO'
+export const SET_ACTIVE_SCENE = 'SET_ACTIVE_SCENE'

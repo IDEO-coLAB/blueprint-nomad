@@ -1,8 +1,8 @@
 import R from 'ramda'
 
 
-import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './constants'
-import { constructionScene } from './constructionScene'
+import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
+import { constructionScene } from './../scenes/scenes'
 
 // helpers for makeScene
 // does the line have given nodeId as an output

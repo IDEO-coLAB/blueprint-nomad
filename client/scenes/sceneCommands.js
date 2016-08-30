@@ -1,5 +1,5 @@
 import { non, noff, ncap, con, coff, overlay, intro, pause, delay } from './../reducers/actions'
-import { RESTING, MESSAGING } from './constants'
+import { RESTING, MESSAGING } from './../constants/constants'
 
 export let sceneCommands = [
 	

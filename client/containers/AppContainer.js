@@ -9,7 +9,7 @@ import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
-import { sceneCommands } from './../constants/sceneCommands'
+import { sceneCommands } from './../scenes/sceneCommands'
 
 function mapStateToProps(state, ownProps) {
   return {
