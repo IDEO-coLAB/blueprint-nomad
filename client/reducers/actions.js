@@ -27,6 +27,13 @@ let setNodeState = (node, state, timeout) => {
 	}
 }
 
+export let ncap = (node, caption) => {
+	return dispatch => {
+		dispatch({ type: SET_NODE_CAPTION, objId: node, caption})
+		return Promise.resolve()
+	}
+}
+
 export let con = (connection) => {
 	return setConnectionState(connection, MESSAGING, SETTINGS.timeouts.connectionMessaging*1000)
 }
@@ -69,14 +76,7 @@ export let delay = (command, delay) => {
 }
 
 
-
-
-
-
-
-
-
-
 // redux reducer actions
 export const SET_NODE_STATE = 'SET_NODE_STATE'
+export const SET_NODE_CAPTION = 'SET_NODE_CAPTION'
 export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE'

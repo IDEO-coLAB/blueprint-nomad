@@ -4,6 +4,7 @@ import R from 'ramda'
 
 import NodeComponent from './../components/NodeComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
+import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
 import { sceneCommands } from './../constants/sceneCommands'
@@ -38,7 +39,7 @@ class App extends Component {
     )
 
     return (
-      <svg width="2000" height="1000">
+      <svg width="1920" height="1080" style={{background: '#efefef'}}>
         { renderedNodes }
       </svg>
     )
@@ -55,7 +56,7 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} /> }
+let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} caption={node.caption} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {
