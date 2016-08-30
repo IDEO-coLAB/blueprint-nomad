@@ -49,6 +49,7 @@ let makeScene = sceneIn => {
 }
 
 export let initialScenes = {
+	showOverlay: true,
 	activeScene: 0,
 	scenes: [{ objects: makeScene(constructionScene) }]
 }
@@ -61,6 +62,8 @@ export let initialScenes = {
 // for simplicity, we always use array to store inputs and outputs, even 
 // if there's only 1
 // export const initialScenes = {
+// 	showOverlay: true,
+//  showIntro: true,
 // 	activeScene: 0,
 // 	scenes: [
 // 		{	

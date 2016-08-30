@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import R from 'ramda'
 
 import NodeComponent from './../components/NodeComponent'
+import OverlayComponent from './../components/OverlayComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
@@ -39,9 +40,12 @@ class App extends Component {
     )
 
     return (
-      <svg width="1920" height="1080" style={{background: '#efefef'}}>
-        { renderedNodes }
-      </svg>
+      <div>
+        <OverlayComponent visible={this.props.scenes.showOverlay} />
+        <svg width="1920" height="1080" style={{background: '#efefef'}}>
+          { renderedNodes }
+        </svg>
+      </div>
     )
   }
 }

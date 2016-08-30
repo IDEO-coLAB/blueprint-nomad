@@ -29,8 +29,14 @@ let setNodeState = (node, state, timeout) => {
 
 export let ncap = (node, caption) => {
 	return dispatch => {
-		if (caption) {}
 		dispatch({ type: SET_NODE_CAPTION, objId: node, caption})
+		return Promise.resolve()
+	}
+}
+
+export let overlay = (show) => {
+	return dispatch => {
+		dispatch({ type: SET_OVERLAY, show })
 		return Promise.resolve()
 	}
 }
@@ -81,3 +87,4 @@ export let delay = (command, delay) => {
 export const SET_NODE_STATE = 'SET_NODE_STATE'
 export const SET_NODE_CAPTION = 'SET_NODE_CAPTION'
 export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE'
+export const SET_OVERLAY = 'SET_OVERLAY'
