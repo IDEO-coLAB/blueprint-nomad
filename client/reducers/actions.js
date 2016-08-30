@@ -8,11 +8,11 @@ import { MESSAGING, RESTING } from './../constants/constants'
 
 // node assumed to be in current scene
 // returns promise
-export let nodeOn = (node) => {
+export let non = (node) => {
 	return setNodeState(node, MESSAGING, SETTINGS.timeouts.nodeMessaging*1000)
 }
 
-export let nodeOff = (node) => {
+export let noff = (node) => {
 	return setNodeState(node, RESTING, SETTINGS.timeouts.nodeResting*1000)
 }
 
@@ -27,11 +27,11 @@ let setNodeState = (node, state, timeout) => {
 	}
 }
 
-export let connectionOn = (connection) => {
+export let con = (connection) => {
 	return setConnectionState(connection, MESSAGING, SETTINGS.timeouts.connectionMessaging*1000)
 }
 
-export let connectionOff = (connection) => {
+export let coff = (connection) => {
 	return setConnectionState(connection, RESTING, SETTINGS.timeouts.connectionResting*1000)
 }
 
