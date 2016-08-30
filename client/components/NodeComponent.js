@@ -8,15 +8,25 @@ let speechBubbleOffset = { x: 50, y: -50 }
 
 class NodeComponent extends Component {
   render() {
+    let styleMessaging = {
+      fill: "#53BCCF",
+      transition: 'fill 0.5s'
+    }
+
+    let styleResting = {
+      fill: "#CFD2D3",
+      transition: 'fill 1.0s'
+    }
+
   	let bubbleX = this.props.x + speechBubbleOffset.x
   	let bubbleY = this.props.y + speechBubbleOffset.y
 
-  	let fill = (R.equals(this.props.state, MESSAGING))? "#53BCCF" : "white"
+  	let style = (R.equals(this.props.state, MESSAGING))? styleMessaging : styleResting
     return (
     	<g>
-    		{ renderSpeechBubble(this.props.caption, bubbleX, bubbleY) }
+    		<SpeechBubbleComponent x={bubbleX} y={bubbleY} width="100" height="50" text={this.props.captionText} visible={this.props.caption}/>
 	    	<g onClick={() => { console.log(this.props.id)}} >
-		      <circle cx={this.props.x} cy={this.props.y} r="40" stroke="#165D6A" strokeWidth="1" fill={fill} />
+		      <circle style={style} cx={this.props.x} cy={this.props.y} r="40" />
 		     </g>
 		  </g>
     )

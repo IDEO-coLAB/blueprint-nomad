@@ -1,5 +1,5 @@
 export const constructionScene = [
-	// inputs				outputs		x, y
+	// outputs		x, y
 	[ [6], 				[200, 500] 		], 
 	[ [6], 				[200, 400] 		], 
 	[ [6], 				[950, 150] 		], 

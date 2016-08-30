@@ -29,6 +29,7 @@ let setNodeState = (node, state, timeout) => {
 
 export let ncap = (node, caption) => {
 	return dispatch => {
+		if (caption) {}
 		dispatch({ type: SET_NODE_CAPTION, objId: node, caption})
 		return Promise.resolve()
 	}

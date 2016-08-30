@@ -27,9 +27,9 @@ class NodeConnection extends Component {
     
     return (
       <g>
-        <line x1={this.props.x1} y1={this.props.y1} x2={this.props.x2} y2={this.props.y2} stroke="black" strokeWidth="3"/>
+        <line x1={this.props.x1} y1={this.props.y1} x2={this.props.x2} y2={this.props.y2} stroke="#98A2A3" strokeWidth="3"/>
         <g style={style}>
-          <circle cx="0" cy="0" r="10" fill="black" />
+          <circle cx="0" cy="0" r="8" fill="#28616B" />
         </g>
       </g>
     )

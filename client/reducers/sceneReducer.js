@@ -17,7 +17,12 @@ export let sceneReducer = function(appState=initialScenes, action) {
 		case SET_NODE_CAPTION: 
 			cloned = R.clone(appState)
 			obj = getObject(cloned, cloned.activeScene, action.objId)
-			obj.caption = action.caption
+			if (action.caption) {
+				obj.caption = true
+				obj.captionText = action.caption
+			} else {
+				obj.caption = false
+			}
 			return cloned
 		default:
 			return appState

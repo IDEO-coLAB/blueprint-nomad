@@ -5,14 +5,20 @@ import { RESTING, MESSAGING } from './../constants/constants'
 
 class SpeechBubbleComponent extends Component {
   render() {
-  	let style = {
-  		fontSize: 16,
-      color: '#ffffff',
-  		background: 'rgba(0, 0, 0, 0.5)',
-  		fontFamily: 'circular',
+    let style = {
+      fontSize: 16,
+      color: 'rgba(256, 256, 256, 0)',
+      background: 'rgba(0, 0, 0, 0)',
+      fontFamily: 'circular',
       borderRadius: '5px', 
-      padding: '7px'
-  	}
+      padding: '7px',
+      transition: 'background 1.0s, color 1.0s'
+    }
+
+  	if (this.props.visible) {
+      style.color = 'rgba(256, 256, 256, 1)',
+      style.background = 'rgba(0, 0, 0, 0.5)'
+    }
 
   	let transform = "translate(" + this.props.x + "," + this.props.y + ")"
 

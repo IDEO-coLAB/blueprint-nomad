@@ -26,7 +26,8 @@ let makeScene = sceneIn => {
 			inputs,
 			outputs: sceneLine[0],
 			pos: { x: sceneLine[1][0], y: sceneLine[1][1] },
-			caption: null
+			caption: false,
+			captionText: ''
 		}
 	}, sceneIn)
 
