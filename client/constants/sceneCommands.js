@@ -3,7 +3,7 @@ import { RESTING, MESSAGING } from './constants'
 
 export let sceneCommands = [
 
-	[ non(0), non(2), ncap(0, 'new beam in transit'), ncap(2, 'weather looks good') ],
+	[ non(0), delay(non(2), 0.5), ncap(0, 'new beam in transit'), delay(ncap(2, 'weather looks good'), 0.5) ],
 	[ con('0-6'), con('2-6') ],
 	[ coff('0-6'), coff('2-6') ],
 	[ non(6), ncap(6, 'project is on schedule') ],
