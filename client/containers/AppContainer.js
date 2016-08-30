@@ -4,6 +4,7 @@ import R from 'ramda'
 
 import NodeComponent from './../components/NodeComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
+import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
 import { sceneCommands } from './../constants/sceneCommands'
@@ -40,6 +41,7 @@ class App extends Component {
     return (
       <svg width="2000" height="1000">
         { renderedNodes }
+        <SpeechBubbleComponent x="300" y="300" width="100" height="50" text="Our crane will be needed in 2 weeks. Our crane will be needed in 2 weeks."/>
       </svg>
     )
   }
