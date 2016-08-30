@@ -39,9 +39,8 @@ class App extends Component {
     )
 
     return (
-      <svg width="2000" height="1000">
+      <svg width="1920" height="1080" style={{background: '#efefef'}}>
         { renderedNodes }
-        <SpeechBubbleComponent x="300" y="300" width="100" height="50" text="Our crane will be needed in 2 weeks. Our crane will be needed in 2 weeks."/>
       </svg>
     )
   }
@@ -57,7 +56,7 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} /> }
+let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} caption={node.caption} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {

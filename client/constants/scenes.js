@@ -4,16 +4,29 @@ import R from 'ramda'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './constants'
 import { constructionScene } from './constructionScene'
 
+// helpers for makeScene
+// does the line have given nodeId as an output
+let hasNodeAsInput = (sceneLine, nodeId)  => {
+	return R.contains(nodeId, sceneLine[0])
+}
+
+let pluckInputs = R.pluck(0)
+
 let makeScene = sceneIn => {
 	let idx = 0
 	let nodeList = R.map((sceneLine) => {
+		// look at all items in the scene list and find any nodes
+		// that have this node as an output
+		let inputs = pluckInputs(R.filter(hasNodeAsInput, sceneIn))
+
 		return {
 			id: idx++,
 			type: SCENE_NODE,
 			state: RESTING,
-			inputs: sceneLine[0],
-			outputs: sceneLine[1],
-			pos: { x: sceneLine[2][0], y: sceneLine[2][1] }
+			inputs,
+			outputs: sceneLine[0],
+			pos: { x: sceneLine[1][0], y: sceneLine[1][1] },
+			caption: null
 		}
 	}, sceneIn)
 
@@ -40,6 +53,8 @@ export let initialScenes = {
 }
 
 
+
+
 // nodes can have multiple inputs and multiple outputs
 // connections can only have 1 input and 1 output
 // for simplicity, we always use array to store inputs and outputs, even 
@@ -56,55 +71,8 @@ export let initialScenes = {
 // 					state: RESTING,
 // 					inputs: [],
 // 					outputs: [1],
-// 					pos: { x: 100, y: 200 }
-// 				},
-// 				{
-// 					id: 1,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200 }
-// 				},
-// 				{
-// 					id: 2,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200 }
-// 				},
-// 				{
-// 					id: 3,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200 }
-// 				},
-// 				{
-// 					id: 4,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200 }
-// 				},
-// 				{
-// 					id: 5,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200 }
-// 				},
-// 				{
-// 					id: 6,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200 }
+// 					pos: { x: 100, y: 200 },
+//					caption: 'this is a speech bubble'
 // 				},
 // 				{
 // 					id: 1,

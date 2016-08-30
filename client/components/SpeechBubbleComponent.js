@@ -20,7 +20,7 @@ class SpeechBubbleComponent extends Component {
     	<g transform={transform}>
         <switch/>
         <foreignObject width="200" height="50" requiredExtensions="http://www.w3.org/1999/xhtml">
-          <div style={style}>Here is a paragraph that requires word wrap</div>
+          <div style={style}>{this.props.text}</div>
         </foreignObject>
       </g>
     )
