@@ -1,13 +1,17 @@
 import R from 'ramda'
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { SET_NODE_STATE, SET_NODE_CAPTION, SET_CONNECTION_STATE, SET_OVERLAY } from './actions'
+import { SET_NODE_STATE, SET_NODE_CAPTION, SET_CONNECTION_STATE, SET_OVERLAY, SET_INTRO } from './actions'
 import { initialScenes } from './../constants/scenes'
 
 // top level reducer
 export let sceneReducer = function(appState=initialScenes, action) {
 	let cloned, obj = null
 	switch (action.type) {
+		case SET_INTRO:
+			cloned = R.clone(appState)
+			cloned.showIntro = action.show			
+			return cloned
 		case SET_OVERLAY:
 			cloned = R.clone(appState)
 			cloned.showOverlay = action.show			

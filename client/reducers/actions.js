@@ -41,6 +41,13 @@ export let overlay = (show) => {
 	}
 }
 
+export let intro = (show) => {
+	return dispatch => {
+		dispatch({ type: SET_INTRO, show })
+		return Promise.resolve()
+	}
+}
+
 export let con = (connection) => {
 	return setConnectionState(connection, MESSAGING, SETTINGS.timeouts.connectionMessaging*1000)
 }
@@ -88,3 +95,4 @@ export const SET_NODE_STATE = 'SET_NODE_STATE'
 export const SET_NODE_CAPTION = 'SET_NODE_CAPTION'
 export const SET_CONNECTION_STATE = 'SET_CONNECTION_STATE'
 export const SET_OVERLAY = 'SET_OVERLAY'
+export const SET_INTRO = 'SET_INTRO'

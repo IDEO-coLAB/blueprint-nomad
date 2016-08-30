@@ -50,6 +50,7 @@ let makeScene = sceneIn => {
 
 export let initialScenes = {
 	showOverlay: true,
+	showIntro: true,
 	activeScene: 0,
 	scenes: [{ objects: makeScene(constructionScene) }]
 }

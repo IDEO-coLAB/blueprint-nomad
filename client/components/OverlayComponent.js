@@ -10,7 +10,8 @@ class OverlayComponent extends Component {
     	width:'1920px',
     	position:'absolute',
     	background:'rgba(0,0,0,.7)',
-    	transition: 'background 1.0s'
+    	transition: 'background 1.0s',
+      zIndex: '1'
    	}
 
    	if (this.props.visible) {

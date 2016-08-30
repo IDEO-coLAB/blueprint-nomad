@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import R from 'ramda'
 
 import NodeComponent from './../components/NodeComponent'
+import IntroComponent from './../components/IntroComponent'
 import OverlayComponent from './../components/OverlayComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
@@ -41,6 +42,7 @@ class App extends Component {
 
     return (
       <div>
+        <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeScene} />
         <OverlayComponent visible={this.props.scenes.showOverlay} />
         <svg width="1920" height="1080" style={{background: '#efefef'}}>
           { renderedNodes }
