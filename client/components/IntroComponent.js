@@ -7,7 +7,7 @@ class IntroOne extends Component {
   render() {
     return (
       <div>
-        <h1>INTRO 1</h1>
+        <h1>INTRO 2</h1>
       </div>
     )
   }

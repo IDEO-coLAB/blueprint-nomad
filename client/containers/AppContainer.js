@@ -4,6 +4,7 @@ import R from 'ramda'
 
 import NodeComponent from './../components/NodeComponent'
 import IntroComponent from './../components/IntroComponent'
+import SceneCaptionComponent from './../components/SceneCaptionComponent'
 import OverlayComponent from './../components/OverlayComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
@@ -31,8 +32,9 @@ class App extends Component {
   }
 
   render() {
-    let activeScene = this.props.scenes.activeScene
-    let allObjects = this.props.scenes.scenes[activeScene].objects
+    let activeSceneId = this.props.scenes.activeScene
+    let activeSceneObj = this.props.scenes.scenes[activeSceneId]
+    let allObjects = this.props.scenes.scenes[activeSceneId].objects
     let renderConnection = _renderConnection(allObjects)
 
     let renderedNodes = [].concat(
@@ -42,8 +44,9 @@ class App extends Component {
 
     return (
       <div>
-        <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeScene} />
+        <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeSceneId} />
         <OverlayComponent visible={this.props.scenes.showOverlay} />
+        <SceneCaptionComponent visible={activeSceneObj.showSceneCaption} text={activeSceneObj.sceneCaption} />
         <svg width="1920" height="1080" style={{background: '#efefef'}}>
           { renderedNodes }
         </svg>
@@ -62,7 +65,7 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} captionText={node.captionText} caption={node.caption} /> }
+let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} captionText={node.captionText} caption={node.showCaption} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {
