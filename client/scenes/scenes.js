@@ -11,7 +11,7 @@
 //    [ [],        [600, 500]  ],
 // ]
 
-export const constructionScene = [
+export const energyScene = [
 	// outputs		x, y
 	[ [2], 				[300, 230] 	],
 	[ [2], 				[1100, 250] ],

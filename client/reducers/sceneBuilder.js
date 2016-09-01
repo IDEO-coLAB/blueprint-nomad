@@ -2,7 +2,7 @@ import R from 'ramda'
 
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { constructionScene } from './../scenes/scenes'
+import { energyScene } from './../scenes/scenes'
 
 // helpers for makeScene
 // does the line have given nodeId as an output
@@ -57,7 +57,7 @@ export let initialScenes = {
 	showIntro: true,
 	activeScene: 0,
 	scenes: [
-		makeScene(constructionScene)
+		makeScene(energyScene)
 	]
 }
 

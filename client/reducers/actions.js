@@ -1,28 +1,60 @@
+import R from 'ramda'
 import { SETTINGS } from './../constants/settings'
-import { MESSAGING, RESTING } from './../constants/constants'
+import { MESSAGING, RESTING, DOM_EVENTS } from './../constants/constants'
 
 
 // scene command functions
 // must return a function that takes dispatch
 // as an argument. Must return promise.
 
+let handleEvent = (resolveHandler) => {
+	return (event) => {
+		event.stopPropagation()
+		return resolveHandler()
+	}
+}
+
+let resolveOnClick = (resolveScene) => {
+	let eventHandler
+	return new Promise((resolveHandler) => {
+			eventHandler = handleEvent(resolveHandler)
+			return document.addEventListener('click', eventHandler)
+		})
+		.then(() => {
+			document.removeEventListener('click', eventHandler)
+			return resolveScene()
+		})
+}
+
+let resolveOnAction = (action, resolve) => {
+	console.log('Awaiting user action...')
+	switch (action) {
+		case 'click':
+			return resolveOnClick(resolve)
+		default:
+			throw new Error('Unhandled action type: ', action)
+	}
+}
+
+let resolveAfterDelay = (delay, resolve) => {
+	return setTimeout(() => resolve(), delay*1000)
+}
+
 // node assumed to be in current scene
 // returns promise
 export let non = (node) => {
-	return setNodeState(node, MESSAGING, SETTINGS.timeouts.nodeMessaging*1000)
+	return setNodeState(node, MESSAGING, SETTINGS.timeouts.nodeMessaging)
 }
 
 export let noff = (node) => {
-	return setNodeState(node, RESTING, SETTINGS.timeouts.nodeResting*1000)
+	return setNodeState(node, RESTING, SETTINGS.timeouts.nodeResting)
 }
 
-let setNodeState = (node, state, timeout) => {
+let setNodeState = (node, state, delay) => {
 	return dispatch => {
 		dispatch({ type: SET_NODE_STATE, objId: node, state })
 		return new Promise((resolve, reject) => {
-			setInterval(() => {
-				resolve()
-			}, timeout)
+			return resolveAfterDelay(delay, resolve)
 		})
 	}
 }
@@ -49,30 +81,31 @@ export let intro = (show) => {
 }
 
 export let con = (connection) => {
-	return setConnectionState(connection, MESSAGING, SETTINGS.timeouts.connectionMessaging*1000)
+	return setConnectionState(connection, MESSAGING, SETTINGS.timeouts.connectionMessaging)
 }
 
 export let coff = (connection) => {
-	return setConnectionState(connection, RESTING, SETTINGS.timeouts.connectionResting*1000)
+	return setConnectionState(connection, RESTING, SETTINGS.timeouts.connectionResting)
 }
 
-let setConnectionState = (connection, state, timeout) => {
+let setConnectionState = (connection, state, delay) => {
 	return dispatch => {
 		dispatch({ type: SET_CONNECTION_STATE, objId: connection, state })
 		return new Promise((resolve, reject) => {
-			setInterval(() => {
-				resolve()
-			}, timeout)
+			return resolveAfterDelay(delay, resolve)
 		})
 	}
 }
 
-export let pause = (timeout) => {
+export let pause = (delay) => {
 	return dispatch => {
 		return new Promise((resolve, reject) => {
-			setInterval(() => {
-				resolve()
-			}, timeout*1000)
+			// If delay is a number, pause for the specified delay
+			if (typeof(delay) === 'number') {
+				return resolveAfterDelay(delay, resolve)
+			}
+			// Otherwise user interaction is required to resolve
+			return resolveOnAction(DOM_EVENTS.CLICK, resolve)
 		})
 	}
 }
@@ -80,9 +113,7 @@ export let pause = (timeout) => {
 export let delay = (command, delay) => {
 	return dispatch => {
 		return new Promise((resolve, reject) => {
-			setInterval(() => {
-				resolve()
-			}, delay*1000)
+			return resolveAfterDelay(delay, resolve)
 		}).then(() => {
 			return command(dispatch)
 		})

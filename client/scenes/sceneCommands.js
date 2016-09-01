@@ -16,6 +16,9 @@ export let sceneCommands = [
 	// ping
 	[ con('0-2'), con('1-2') ],
 	[ coff('0-2'), coff('1-2') ],
+
+	pause(),
+
 	[ noff(0), ncap(0, null), noff(1), ncap(1, null) ],
 	[ non(2), ncap(2, 'Plenty of sun in the region') ],
 	pause(1),
