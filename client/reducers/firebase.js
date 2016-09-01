@@ -2,7 +2,7 @@ import firebase from 'firebase'
 import R from 'ramda'
 
 import { firebaseUrl, fbConfig } from './../constants/firebaseConfig'
-import { FIREBASE_DEMO_PAYLOAD } from './actions'
+import { FIREBASE_DEMO_PAYLOAD, FIREBASE_DEMO_RELAX } from './actions'
 
 firebase.initializeApp(fbConfig)
 
@@ -26,6 +26,13 @@ export const listenFirebase = () => {
 		    	payload = data.value.explosion
 		    }
 		    dispatch({ type: FIREBASE_DEMO_PAYLOAD, sensor, payload})
+		    
+		    // toggle state's changed flag back to false. Components use
+		    // that flag to render a temporary change when a new value
+		    // comes in from firebase.
+		    setTimeout(() => {
+		    	dispatch({ type: FIREBASE_DEMO_RELAX, sensor })
+		    }, 1000)
 		  })
 		}, dbs)
 		return Promise.resolve()

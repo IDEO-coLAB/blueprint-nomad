@@ -8,6 +8,7 @@ import SceneCaptionComponent from './../components/SceneCaptionComponent'
 import OverlayComponent from './../components/OverlayComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
+import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
 import { sceneCommands } from './../scenes/sceneCommands'
@@ -44,6 +45,7 @@ class App extends Component {
 
     return (
       <div>
+        <LiveSensorsContainer />
         <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeSceneId} />
         <OverlayComponent visible={this.props.scenes.showOverlay} />
         <SceneCaptionComponent visible={activeSceneObj.showSceneCaption} text={activeSceneObj.sceneCaption} />
