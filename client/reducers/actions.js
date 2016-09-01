@@ -103,7 +103,6 @@ export let sceneCaption = caption => {
 	}
 }
 
-
 // redux reducer actions
 export const SET_NODE_STATE = 'SET_NODE_STATE'
 export const SET_NODE_CAPTION = 'SET_NODE_CAPTION'
@@ -112,3 +111,4 @@ export const SET_OVERLAY = 'SET_OVERLAY'
 export const SET_INTRO = 'SET_INTRO'
 export const SET_ACTIVE_SCENE = 'SET_ACTIVE_SCENE'
 export const SET_SCENE_CAPTION = 'SET_SCENE_CAPTION'
+export const FIREBASE_DEMO_PAYLOAD = 'FIREBASE_DEMO_PAYLOAD'

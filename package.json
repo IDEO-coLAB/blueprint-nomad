@@ -49,6 +49,7 @@
     "fetch-mock": "4.0.1",
     "fetch-mock-forwarder": "1.0.0",
     "file-loader": "^0.8.4",
+    "firebase": "^3.3.0",
     "font-loader": "^0.1.2",
     "history": "1.17.0",
     "html-loader": "^0.3.0",
