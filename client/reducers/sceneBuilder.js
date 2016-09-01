@@ -2,7 +2,7 @@ import R from 'ramda'
 
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { constructionScene, financialScene } from './../scenes/scenes'
+import { constructionScene } from './../scenes/scenes'
 
 // helpers for makeScene
 // does the line have given nodeId as an output
@@ -56,9 +56,8 @@ export let initialScenes = {
 	showOverlay: true,
 	showIntro: true,
 	activeScene: 0,
-	scenes: [ 
-		makeScene(constructionScene),
-		makeScene(financialScene)
+	scenes: [
+		makeScene(constructionScene)
 	]
 }
 
@@ -67,14 +66,14 @@ export let initialScenes = {
 
 // nodes can have multiple inputs and multiple outputs
 // connections can only have 1 input and 1 output
-// for simplicity, we always use array to store inputs and outputs, even 
+// for simplicity, we always use array to store inputs and outputs, even
 // if there's only 1
 // export const initialScenes = {
 // 	showOverlay: true,
 //  showIntro: true,
 // 	activeScene: 0,
 // 	scenes: [
-// 		{	
+// 		{
 // 			// an object is either a node or a connection
 // 			objects: [
 // 				{
