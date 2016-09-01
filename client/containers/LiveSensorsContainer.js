@@ -13,7 +13,7 @@ function mapStateToProps(state, ownProps) {
 
 class LiveSensorsContainer extends Component {
   render() {
-    console.log(this.props.live.light)
+    // console.log(this.props.live.light)
     return (
       <svg width="1920" height="1080" style={{background: '#efefef'}}>
       	<g>

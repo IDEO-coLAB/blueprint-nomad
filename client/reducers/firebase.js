@@ -1,3 +1,5 @@
+'use strict'
+
 import firebase from 'firebase'
 import R from 'ramda'
 
@@ -26,7 +28,7 @@ export const listenFirebase = () => {
 		    	payload = data.value.explosion
 		    }
 		    dispatch({ type: FIREBASE_DEMO_PAYLOAD, sensor, payload})
-		    
+
 		    // toggle state's changed flag back to false. Components use
 		    // that flag to render a temporary change when a new value
 		    // comes in from firebase.
