@@ -1,11 +1,14 @@
 'use strict'
 
 import firebase from 'firebase'
+import Particle from 'particle-api-js'
 import R from 'ramda'
 
 import { firebaseUrl, fbConfig } from './../constants/firebaseConfig'
+import { particleConfig } from './../constants/particleConfig'
 import { FIREBASE_DEMO_PAYLOAD, FIREBASE_DEMO_RELAX, NOTIFY_PARTICLE } from './actions'
 
+// Firebase
 firebase.initializeApp(fbConfig)
 
 const db = firebase.database()
@@ -13,6 +16,15 @@ const explosionDb = db.ref('explosion')
 const lightDb = db.ref('light')
 const soundDb = db.ref('sound')
 const dbs = [explosionDb, soundDb, lightDb]
+
+// Particle
+const particle = new Particle()
+const particleDevice = R.head(particleConfig.devices)
+
+particle.login({ username: particleConfig.username, password: particleConfig.password })
+	.catch((err) => {
+		console.error('Unable to log into Particle!')
+	})
 
 export const listenFirebase = () => {
 	return dispatch => {
@@ -50,7 +62,15 @@ export const stopListenFirebase = () => {
 
 export const notifyParticle = (msg) => {
 	return dispatch => {
-		console.log('within!' , msg)
-		// dispatch({ type: NOTIFY_PARTICLE,  })
+		var fnPr = particle.callFunction({ deviceId: particleDevice.id, name: 'led', argument: 'success', auth: particleDevice.token });
+
+		fnPr.then((result) => {
+	    console.log('Partcle PNR call succes:', result);
+	  })
+	  .catch((err) => {
+	    console.log('Partcle PNR error called:', err);
+	  })
+
+		// dispatch({ Not sure what we'll dispatch yet :) })
 	}
 }

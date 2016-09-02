@@ -38,7 +38,7 @@ class NodeComponent extends Component {
   	let style = (R.equals(this.props.state, MESSAGING))? styleMessaging : styleResting
 
     let handler = () => {
-      this.props.notifyParticle('I am the message')
+      this.props.notifyParticle(true)
     }
 
     return (
