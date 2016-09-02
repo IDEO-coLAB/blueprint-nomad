@@ -26,6 +26,17 @@ particle.login({ username: particleConfig.username, password: particleConfig.pas
 		console.error('Unable to log into Particle!')
 	})
 
+export const notifyParticle = (on) => {
+	const fnArg = on ? 'success' : 'total error'
+	var fnPr = particle.callFunction({ deviceId: particleDevice.id, name: 'led', argument: fnArg, auth: particleDevice.token });
+	fnPr.then((result) => {
+    console.log('Partcle PNR call succes:', result);
+  })
+  .catch((err) => {
+    console.log('Partcle PNR error called:', err);
+  })
+}
+
 export const listenFirebase = () => {
 	return dispatch => {
 		R.forEach((ref) => {
@@ -34,18 +45,19 @@ export const listenFirebase = () => {
 		    const data = { type, value: snapshot.val() }
 		    let payload = null
 		    let sensor = type
+
 		    if (type === 'light' || type === 'sound') {
 		    	payload = data.value.value
-		    } else {
-		    	payload = data.value.explosion
 		    }
 		    dispatch({ type: FIREBASE_DEMO_PAYLOAD, sensor, payload})
+		    notifyParticle(true)
 
 		    // toggle state's changed flag back to false. Components use
 		    // that flag to render a temporary change when a new value
 		    // comes in from firebase.
 		    setTimeout(() => {
 		    	dispatch({ type: FIREBASE_DEMO_RELAX, sensor })
+		    	notifyParticle()
 		    }, 1000)
 		  })
 		}, dbs)
@@ -57,20 +69,5 @@ export const stopListenFirebase = () => {
 	return dispatch => {
 		R.forEach((ref) => { ref.off('value') }, dbs)
 		return Promise.resolve()
-	}
-}
-
-export const notifyParticle = (msg) => {
-	return dispatch => {
-		var fnPr = particle.callFunction({ deviceId: particleDevice.id, name: 'led', argument: 'success', auth: particleDevice.token });
-
-		fnPr.then((result) => {
-	    console.log('Partcle PNR call succes:', result);
-	  })
-	  .catch((err) => {
-	    console.log('Partcle PNR error called:', err);
-	  })
-
-		// dispatch({ Not sure what we'll dispatch yet :) })
 	}
 }

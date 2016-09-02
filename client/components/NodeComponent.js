@@ -1,24 +1,10 @@
 import React, {Component} from 'react'
-import { connect } from 'react-redux'
 import R from 'ramda'
 
-import { notifyParticle } from './../reducers/firebase'
 import { RESTING, MESSAGING } from './../constants/constants'
 import SpeechBubbleComponent from './SpeechBubbleComponent'
 
 let speechBubbleOffset = { x: 50, y: -50 }
-
-function mapStateToProps(state) {
-  return {}
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    notifyParticle: function(msg) {
-      dispatch(notifyParticle(msg))
-    }
-  }
-}
 
 class NodeComponent extends Component {
   render() {
@@ -37,14 +23,10 @@ class NodeComponent extends Component {
 
   	let style = (R.equals(this.props.state, MESSAGING))? styleMessaging : styleResting
 
-    let handler = () => {
-      this.props.notifyParticle(true)
-    }
-
     return (
     	<g>
     		<SpeechBubbleComponent x={bubbleX} y={bubbleY} width="100" height="50" text={this.props.captionText} visible={this.props.caption}/>
-	    	<g onClick={handler} >
+	    	<g onClick={() => {console.log(123) }} >
 		      <circle style={style} cx={this.props.x} cy={this.props.y} r="40" />
 		     </g>
 		  </g>
@@ -59,4 +41,4 @@ let renderSpeechBubble = (text, x, y) => {
 	)
 }
 
-module.exports = connect(mapStateToProps, mapDispatchToProps)(NodeComponent)
+module.exports = NodeComponent
