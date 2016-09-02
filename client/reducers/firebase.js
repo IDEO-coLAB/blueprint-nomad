@@ -4,7 +4,7 @@ import firebase from 'firebase'
 import R from 'ramda'
 
 import { firebaseUrl, fbConfig } from './../constants/firebaseConfig'
-import { FIREBASE_DEMO_PAYLOAD, FIREBASE_DEMO_RELAX } from './actions'
+import { FIREBASE_DEMO_PAYLOAD, FIREBASE_DEMO_RELAX, NOTIFY_PARTICLE } from './actions'
 
 firebase.initializeApp(fbConfig)
 
@@ -45,5 +45,12 @@ export const stopListenFirebase = () => {
 	return dispatch => {
 		R.forEach((ref) => { ref.off('value') }, dbs)
 		return Promise.resolve()
+	}
+}
+
+export const notifyParticle = (msg) => {
+	return dispatch => {
+		console.log('within!' , msg)
+		// dispatch({ type: NOTIFY_PARTICLE,  })
 	}
 }
