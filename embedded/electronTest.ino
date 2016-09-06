@@ -2,21 +2,10 @@
 // Controlling LEDs over the Internet
 // -----------------------------------
 
-int[] red = {0,255}
-int[] green = {0,255}
-int[] blue = {0,255}
-int counter = 0
-
-void setup()
-{
-    RGB.control(true);
-    Particle.function('toggle', rgbToggle);
-}
-
-void loop()
-{
-
-}
+int red[] = {0,255};
+int green[] = {0,255};
+int blue[] = {0,255};
+int counter = 0;
 
 int rgbToggle (String command) {
     /* Particle.functions always take a string as an argument and return an integer.
@@ -27,6 +16,22 @@ int rgbToggle (String command) {
     and -1 if we received a totally bogus command that didn't do anything to the LEDs.
     */
 
-    RGB.control(red[counter%2], green[counter%2], blue[counter%2])
-    counter++
+    RGB.color(red[counter%2], green[counter%2], blue[counter%2]);
+    if (counter % 2 == 0) {
+        digitalWrite(D0, LOW);
+    } else {
+        digitalWrite(D0, HIGH);
+    }
+    counter++;
+    return 0;
 }
+
+void setup() {
+    pinMode(D0, OUTPUT);
+    digitalWrite(D0, HIGH);
+    RGB.control(true);
+    RGB.color(0, 255, 0);
+    Particle.function("toggle", rgbToggle);
+}
+
+void loop() {}
