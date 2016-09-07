@@ -12,7 +12,7 @@ import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands, activateNodes } from './../reducers/sceneReducer'
 import { sceneCommands } from './../scenes/sceneCommands'
-import { non } from './../reducers/actions'
+import { non, nalon } from './../reducers/actions'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -26,13 +26,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(dispatchSceneCommands(sceneCommands))
     },
     activateNodes: (nodeId) => {
-      dispatch(activateNodes([non(0), non(1)]))
-      setTimeout(() => {
-        dispatch(activateNodes([non(3)]))
-      }, 500)
-      setTimeout(() => {
-        dispatch(activateNodes([non(4)]))
-      }, 1500)
+      dispatch(activateNodes([non(0), nalon(1)]))
     }
   }
 }
