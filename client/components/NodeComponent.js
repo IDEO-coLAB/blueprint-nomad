@@ -63,6 +63,7 @@ class NodeComponent extends Component {
     this.connections = null
     this._isAlert = false
     this._currentState = NODE_STATES.AVAILABLE
+    this._rateTimer = null
     this.style = styleOff
   }
 
@@ -81,31 +82,40 @@ class NodeComponent extends Component {
     const nowOff = this.props.node.state === NODE_OFF
     const nowOn = this.props.node.state !== NODE_OFF
 
+    // triggering activation
     if (wasOff && nowOn) {
       if (this._currentState !== NODE_STATES.AVAILABLE) return
-      this._currentState = NODE_STATES.ACTIVATING
-
       this._isAlert = R.equals(this.props.node.state, NODE_ALERT_ON)
-      this.props.activate(id, this._isAlert)
+
       this.style = this._isAlert ? styleAlertOn : styleOn
+      this.props.activate(id, this._isAlert)
     }
+
+    // activation and trigger deactivation
     else if (wasOn && nowOn) {
-      if (this._currentState !== NODE_STATES.ACTIVATING) return
+      if (this._currentState === NODE_STATES.ACTIVATING) return
       this._currentState = NODE_STATES.ACTIVATING
 
       setTimeout(() => {
-        this.props.deactivate(id)
         this.style = styleOff
+        this.props.deactivate(id)
       }, SETTINGS.timeouts.nodeOn)
     }
+
+    // deactivation and back to available state
     else if (wasOn && nowOff) {
       if (this._currentState === NODE_STATES.DEACTIVATING) return
       this._currentState = NODE_STATES.DEACTIVATING
 
+      if (!this._rateTimer) {
+        this._rateTimer = setTimeout(() => {
+          this.props.propagateToConnections(connections, this._isAlert)
+          this._rateTimer = null
+        }, this.props.rate)
+      }
+
       setTimeout(() => {
-        this.props.propagateToConnections(connections, this._isAlert)
         this._currentState = NODE_STATES.AVAILABLE
-        this._isAlert = false
       }, SETTINGS.timeouts.nodeOff)
     }
   }

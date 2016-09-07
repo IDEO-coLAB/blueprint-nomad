@@ -14,6 +14,11 @@ import { dispatchSceneCommands, activateNodes } from './../reducers/sceneReducer
 import { sceneCommands } from './../scenes/sceneCommands'
 import { non, nalon } from './../reducers/actions'
 
+let getRandomRate = () => {
+  // milliseconds
+  return Math.random() * (3400 - 350) + 350
+}
+
 function mapStateToProps(state, ownProps) {
   return {
     scenes: state.scenes
@@ -26,7 +31,7 @@ function mapDispatchToProps(dispatch) {
       dispatch(dispatchSceneCommands(sceneCommands))
     },
     activateNodes: (nodeId) => {
-      dispatch(activateNodes([non(0), nalon(1)]))
+      dispatch(activateNodes([non(0)]))
     }
   }
 }
@@ -70,7 +75,7 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent node={node} /> }
+let renderNode = node => { return <NodeComponent node={node} rate={getRandomRate()} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {

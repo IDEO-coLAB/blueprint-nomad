@@ -46,22 +46,6 @@ class NodeConnection extends Component {
     this._currentState = CONN_STATES.AVAILABLE
   }
 
-  // get isAvailable() {
-  //   return this.__isAvailable
-  // }
-
-  // set isAvailable(bool) {
-  //   return this.__isAvailable = bool
-  // }
-
-  // get isAlert() {
-  //   return this._isAlert
-  // }
-
-  // set isAlert(bool=false) {
-  //   return this._isAlert = bool
-  // }
-
   componentWillMount() {
     this.keyframe = generateTranslationAnimation(
       this.props.x1,
@@ -87,28 +71,29 @@ class NodeConnection extends Component {
     const nowOff = this.props.state === CONN_OFF
     const nowOn = this.props.state !== CONN_OFF
 
+    // triggering activation
     if (wasOff && nowOn) {
       if (this._currentState !== CONN_STATES.AVAILABLE) return
       this._isAlert = R.equals(this.props.state, CONN_ALERT_ON)
       this.props.activate(id, this._isAlert)
-      // console.log('Conn on:', id, 'isAlert:', this.isAlert)
     }
+
+    // activation and trigger deactivation
     else if (wasOn && nowOn) {
       if (this._currentState === CONN_STATES.ACTIVATING) return
       this._currentState = CONN_STATES.ACTIVATING
+
       setTimeout(() => {
-        // console.log('Conn off:', id,'isAlert:', this._isAlert)
         this.props.deactivate(id)
       }, SETTINGS.timeouts.connectionOn)
     }
+
+    // deactivation and back to available state
     else if (wasOn && nowOff) {
       if (this._currentState === CONN_STATES.DEACTIVATING) return
       this._currentState = CONN_STATES.DEACTIVATING
+
       setTimeout(() => {
-        // console.log('Conn propagating: ', id,'isAlert:', this._isAlert)
-        // console.log('')
-        // console.log('')
-        // console.log('=================')
         this.props.propagateToOutputNode(outputNode.id, this._isAlert)
         this._currentState = CONN_STATES.AVAILABLE
         this._isAlert = false
