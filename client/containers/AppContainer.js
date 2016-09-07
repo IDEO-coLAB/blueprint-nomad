@@ -4,6 +4,7 @@ import R from 'ramda'
 
 import NodeComponent from './../components/NodeComponent'
 import IntroComponent from './../components/IntroComponent'
+import SfMapComponent from './../components/SfMapComponent'
 import SceneCaptionComponent from './../components/SceneCaptionComponent'
 import OverlayComponent from './../components/OverlayComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
@@ -45,11 +46,11 @@ class App extends Component {
 
     return (
       <div>
-        <LiveSensorsContainer />
+        <SfMapComponent />
         <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeSceneId} />
         <OverlayComponent visible={this.props.scenes.showOverlay} />
         <SceneCaptionComponent visible={activeSceneObj.showSceneCaption} text={activeSceneObj.sceneCaption} />
-        <svg width="1920" height="1080" style={{background: '#efefef'}}>
+        <svg width="1620" height="1080" >
           { renderedNodes }
         </svg>
       </div>
@@ -67,7 +68,7 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} captionText={node.captionText} caption={node.showCaption} /> }
+let renderNode = node => { return <NodeComponent pos={node.pos} state={node.state} id={node.id} captionText={node.captionText} caption={node.showCaption} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {

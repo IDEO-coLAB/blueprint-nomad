@@ -4,10 +4,8 @@ import { RESTING, MESSAGING } from './../constants/constants'
 
 export let sceneCommands = [
 
-	listenFirebase(),
-
-	// intro(false),
-	// overlay(false),
+	intro(false),
+	overlay(false)
 
 	// // Turn on solar array
 	// ncap(0, 'Lots of sun here'),

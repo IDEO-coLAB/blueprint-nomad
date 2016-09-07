@@ -17,7 +17,7 @@ const lightDb = db.ref('light')
 const soundDb = db.ref('sound')
 const dbs = [explosionDb, soundDb, lightDb]
 
-// Particle
+// // Particle
 const particle = new Particle()
 const particleDevice = R.head(particleConfig.devices)
 
