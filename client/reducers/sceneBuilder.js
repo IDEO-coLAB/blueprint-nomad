@@ -3,6 +3,7 @@ import R from 'ramda'
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { energyScene } from './../scenes/scenes'
+import { sceneObjects } from './../scenes/sceneObjects'
 
 // helpers for makeScene
 // does the line have given nodeId as an output
@@ -14,37 +15,12 @@ let pluckInputs = R.pluck(0)
 
 let makeScene = sceneIn => {
 	let idx = 0
-	let nodeList = R.map((sceneLine) => {
-		// look at all items in the scene list and find any nodes
-		// that have this node as an output
-		let inputs = pluckInputs(R.filter(hasNodeAsInput, sceneIn))
-
-		return {
-			id: idx++,
-			type: SCENE_NODE,
-			state: RESTING,
-			inputs,
-			outputs: sceneLine[0],
-			pos: { x: sceneLine[1][0], y: sceneLine[1][1], rad: sceneLine[1][2], strokeWidth: sceneLine[1][3] },
-			showCaption: false,
-			captionText: ''
-		}
+	let objectList = R.map((obj) => {
+		return obj.state
 	}, sceneIn)
 
-	let connectionList = R.map((node) => {
-		return R.map((outputNodeId) => {
-			return {
-				id: String(node.id) + '-' + String(outputNodeId),
-				type: SCENE_CONNECTION,
-				state: RESTING,
-				inputs: [ node.id ],
-				outputs: [ outputNodeId ]
-			}
-		}, node.outputs)
-	}, nodeList)
-
-	let objectList = R.flatten(R.concat(nodeList, connectionList))
 	console.log(objectList)
+	console.log(sceneObjects)
 	return {
 		objects: objectList,
 		showSceneCaption: false,
@@ -57,7 +33,7 @@ export let initialScenes = {
 	showIntro: true,
 	activeScene: 0,
 	scenes: [
-		makeScene(energyScene)
+		makeScene(sceneObjects)
 	]
 }
 

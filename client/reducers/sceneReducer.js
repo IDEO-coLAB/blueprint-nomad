@@ -20,9 +20,8 @@ export let sceneReducer = function(appState=initialScenes, action) {
 			return cloned
 		case SET_NODE_STATE:
 		case SET_CONNECTION_STATE: 
-			cloned = R.clone(appState)
-			obj = getObject(cloned, cloned.activeScene, action.objId)
-			obj.state = action.state
+			let cloned = updateNodeState(appState, action.payload)
+			console.log(cloned)
 			return cloned
 		case SET_NODE_CAPTION: 
 			cloned = R.clone(appState)
@@ -85,6 +84,23 @@ let recursiveDispatchSceneCommands = (dispatch, commandList) => {
 let getObject = (objects, sceneId, id) => {
 	let scene = objects.scenes[sceneId]
 	return R.find(R.propEq('id', id), scene.objects)
+}
+
+// returns a copy of appstate, doesn't mutate appstate
+let updateNodeState = (appState, nodeState) => {
+	let cloned = R.clone(appState)
+	let nodes = cloned.scenes[cloned.activeScene].objects
+	let nodeId = nodeState.id
+
+	// remove node from list
+	let filtered = R.filter((node) => {
+		return node.id !== nodeId
+	}, nodes)
+
+	// add it back
+	let added = R.concat(filtered, nodeState)
+	cloned.scenes[cloned.activeScene].objects = added
+	return cloned
 }
 
 

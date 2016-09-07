@@ -13,6 +13,7 @@ import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
 import { sceneCommands } from './../scenes/sceneCommands'
+import { sceneObjects } from './../scenes/sceneObjects'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -23,7 +24,15 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     startScenes: function() {
-      dispatch(dispatchSceneCommands(sceneCommands))
+      R.forEach((obj) => {
+        obj.setDispatch(dispatch)
+      }, sceneObjects)
+
+      sceneObjects[0].setSun(600)
+      sceneObjects[0].activate()
+
+      // sceneObjects[1].setSun(6000)
+      
     }
   }
 }
@@ -47,8 +56,6 @@ class App extends Component {
     return (
       <div>
         <SfMapComponent />
-        <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeSceneId} />
-        <OverlayComponent visible={this.props.scenes.showOverlay} />
         <SceneCaptionComponent visible={activeSceneObj.showSceneCaption} text={activeSceneObj.sceneCaption} />
         <svg width="1620" height="1080" >
           { renderedNodes }
@@ -59,8 +66,19 @@ class App extends Component {
 }
 
 // helpers
-let connectionInput = connection => { return R.head(connection.inputs) }
-let connectionOutput = connection => { return R.head(connection.outputs) }
+let connectionInput = connectionObj => {
+
+  const obj = R.find((obj) => {
+    return obj.state.id === connectionObj.id
+  })(sceneObjects)
+  return obj._input.state.id
+}
+let connectionOutput = connectionObj => {
+  const obj = R.find((obj) => {
+    return obj.state.id === connectionObj.id
+  })(sceneObjects)
+  return obj._output[1].state.id
+}
 
 // curried
 let _getObjectWithId = R.curry((objects, id) => { return R.find(R.propEq('id', id), objects) })
