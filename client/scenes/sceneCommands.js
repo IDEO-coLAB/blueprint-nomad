@@ -4,7 +4,7 @@ import { RESTING, MESSAGING } from './../constants/constants'
 
 export let sceneCommands = [
 
-	listenFirebase(),
+	// listenFirebase(),
 
 	// intro(false),
 	// overlay(false),

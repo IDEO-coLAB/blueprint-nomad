@@ -1,8 +1,8 @@
 import R from 'ramda'
 
 
-import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { constructionScene } from './../scenes/scenes'
+import { SCENE_NODE, SCENE_CONNECTION, CONN_OFF, NODE_OFF } from './../constants/constants'
+import { energyScene, introScene } from './../scenes/scenes'
 
 // helpers for makeScene
 // does the line have given nodeId as an output
@@ -22,7 +22,7 @@ let makeScene = sceneIn => {
 		return {
 			id: idx++,
 			type: SCENE_NODE,
-			state: RESTING,
+			state: NODE_OFF,
 			inputs,
 			outputs: sceneLine[0],
 			pos: { x: sceneLine[1][0], y: sceneLine[1][1] },
@@ -36,7 +36,7 @@ let makeScene = sceneIn => {
 			return {
 				id: String(node.id) + '-' + String(outputNodeId),
 				type: SCENE_CONNECTION,
-				state: RESTING,
+				state: CONN_OFF,
 				inputs: [ node.id ],
 				outputs: [ outputNodeId ]
 			}
@@ -44,7 +44,7 @@ let makeScene = sceneIn => {
 	}, nodeList)
 
 	let objectList = R.flatten(R.concat(nodeList, connectionList))
-	console.log(objectList)
+
 	return {
 		objects: objectList,
 		showSceneCaption: false,
@@ -53,11 +53,12 @@ let makeScene = sceneIn => {
 }
 
 export let initialScenes = {
-	showOverlay: true,
-	showIntro: true,
-	activeScene: 0,
+	showOverlay: false,
+	showIntro: false,
+	activeScene: 1,
 	scenes: [
-		makeScene(constructionScene)
+		makeScene(introScene),
+		makeScene(energyScene),
 	]
 }
 

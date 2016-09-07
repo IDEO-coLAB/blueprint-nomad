@@ -2,7 +2,9 @@ import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import R from 'ramda'
 
+import { dispatchSceneCommands, activateNodes } from './../reducers/sceneReducer'
 import { listenFirebase } from './../reducers/firebase'
+import { non } from './../reducers/actions'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -13,14 +15,17 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     startScenes: function() {
-      dispatch(listenFirebase())
+      // dispatch(listenFirebase())
+    },
+    activateNodes: () => {
+      dispatch(activateNodes([non(0)]))
     }
   }
 }
 
 class App extends Component {
   componentWillMount() {
-    this.props.startScenes()
+    this.props.activateNodes()
   }
 
   render() {

@@ -11,8 +11,7 @@
 //    [ [],        [600, 500]  ],
 // ]
 
-export const constructionScene = [
-	// outputs		x, y
+export const energyScene = [
 	[ [2], 				[300, 230] 	],
 	[ [2], 				[1100, 250] ],
 	[ [3], 				[750, 100] 	],
@@ -20,4 +19,11 @@ export const constructionScene = [
 	[ [5], 				[100, 700] 	],
 	[ [6], 				[900, 550] 	],
 	[ [],					[1450, 850] ]
+]
+
+export const introScene = [
+  // outputs    x, y
+  [ [2],        [500, 250]  ],
+  [ [2],        [500, 850] ],
+  [ [],         [1400, 550]  ],
 ]

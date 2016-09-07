@@ -4,8 +4,10 @@ import firebase from 'firebase'
 import Particle from 'particle-api-js'
 import R from 'ramda'
 
+import { non, nalon, noff, ncap, con, calon, coff, overlay, intro, activeScene, sceneCaption, pause, delay } from './actions'
 import { firebaseUrl, fbConfig } from './../constants/firebaseConfig'
 import { particleConfig } from './../constants/particleConfig'
+import { dispatchSceneCommands } from './sceneReducer'
 import { FIREBASE_DEMO_PAYLOAD, FIREBASE_DEMO_RELAX, NOTIFY_PARTICLE } from './actions'
 
 // Firebase
@@ -21,15 +23,19 @@ const dbs = [explosionDb, soundDb, lightDb]
 const particle = new Particle()
 const particleDevice = R.head(particleConfig.devices)
 
+
 particle.login({ username: particleConfig.username, password: particleConfig.password })
+	.then((result) => {
+		console.log('Logged in to Particle')
+	})
 	.catch((err) => {
 		console.error('Unable to log into Particle!')
 	})
 
-export const notifyParticle = (on) => {
-	const fnArg = on ? 'success' : 'total error'
-	var fnPr = particle.callFunction({ deviceId: particleDevice.id, name: 'led', argument: fnArg, auth: particleDevice.token });
-	fnPr.then((result) => {
+export const notifyParticle = () => {
+	const fnArg = ''
+	var fnPr = particle.callFunction({ deviceId: particleDevice.id, name: 'toggle', argument: fnArg, auth: particleDevice.token });
+	return fnPr.then((result) => {
     console.log('Partcle PNR call succes:', result);
   })
   .catch((err) => {
@@ -37,28 +43,47 @@ export const notifyParticle = (on) => {
   })
 }
 
+// const pingCommands = [
+// 	con('0-2'),
+// 	pause(.1),
+// 	non(0),
+// 	pause(.1),
+// 	noff(0),
+// 	pause(0.9),
+// 	non(2),
+// 	coff('0-2'),
+// 	pause(.1),
+// 	noff(2)
+// ]
+
+// const alertCommands = [
+// 	calon('0-2'),
+// 	pause(.1),
+// 	nalon(0),
+// 	pause(.1),
+// 	noff(0),
+// 	pause(0.9),
+// 	nalon(2, notifyParticle),
+// 	coff('0-2'),
+// 	pause(.1),
+// 	noff(2)
+// ]
+
 export const listenFirebase = () => {
 	return dispatch => {
 		R.forEach((ref) => {
 		  const type = R.replace(/\//, '', ref.path.toString())
 		  ref.on('value', (snapshot) => {
 		    const data = { type, value: snapshot.val() }
-		    let payload = null
+		    let payload = data.value.value
 		    let sensor = type
+		    let commands = pingCommands
 
-		    if (type === 'light' || type === 'sound') {
-		    	payload = data.value.value
-		    }
-		    dispatch({ type: FIREBASE_DEMO_PAYLOAD, sensor, payload})
-		    notifyParticle(true)
+				if (payload > 2000) {
+					commands = alertCommands
+				}
 
-		    // toggle state's changed flag back to false. Components use
-		    // that flag to render a temporary change when a new value
-		    // comes in from firebase.
-		    setTimeout(() => {
-		    	dispatch({ type: FIREBASE_DEMO_RELAX, sensor })
-		    	notifyParticle()
-		    }, 1000)
+				// dispatchSceneCommands(commands)(dispatch)
 		  })
 		}, dbs)
 		return Promise.resolve()

@@ -1,10 +1,9 @@
 // all times are seconds
-export const SETTINGS = { 
+export const SETTINGS = {
 	timeouts: {
-		nodeMessaging: 1, 
-		nodeResting: 0, 
-		connectionMessaging: 3,
-		connectionResting: 0
+		nodeOn: 200,
+		nodeOff: 800,
+		connectionOn: 1500,
+		connectionOff: 100
 	}
 }
-

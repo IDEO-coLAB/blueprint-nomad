@@ -8,10 +8,11 @@ import SceneCaptionComponent from './../components/SceneCaptionComponent'
 import OverlayComponent from './../components/OverlayComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
-import LiveSensorsContainer from './LiveSensorsContainer'
+// import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { dispatchSceneCommands } from './../reducers/sceneReducer'
+import { dispatchSceneCommands, activateNodes } from './../reducers/sceneReducer'
 import { sceneCommands } from './../scenes/sceneCommands'
+import { non } from './../reducers/actions'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -21,15 +22,24 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    startScenes: function() {
+    startScenes: () => {
       dispatch(dispatchSceneCommands(sceneCommands))
+    },
+    activateNodes: (nodeId) => {
+      dispatch(activateNodes([non(0), non(1)]))
+      setTimeout(() => {
+        dispatch(activateNodes([non(3)]))
+      }, 500)
+      setTimeout(() => {
+        dispatch(activateNodes([non(4)]))
+      }, 1500)
     }
   }
 }
 
 class App extends Component {
   componentDidMount() {
-    this.props.startScenes()
+    this.props.activateNodes()
   }
 
   render() {
@@ -45,7 +55,6 @@ class App extends Component {
 
     return (
       <div>
-        <LiveSensorsContainer />
         <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeSceneId} />
         <OverlayComponent visible={this.props.scenes.showOverlay} />
         <SceneCaptionComponent visible={activeSceneObj.showSceneCaption} text={activeSceneObj.sceneCaption} />
@@ -67,14 +76,14 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} captionText={node.captionText} caption={node.showCaption} /> }
+let renderNode = node => { return <NodeComponent node={node} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {
   let getFromId = _getObjectWithId(objects)
   let cin = getFromId(connectionInput(connection))
   let cout = getFromId(connectionOutput(connection))
-  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} state={connection.state} />
+  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} id={connection.id} inputId={cin.id} outputId={cout.id} state={connection.state} />
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
