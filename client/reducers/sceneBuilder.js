@@ -2,7 +2,7 @@ import R from 'ramda'
 
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { constructionScene } from './../scenes/scenes'
+import { energyScene } from './../scenes/scenes'
 
 // helpers for makeScene
 // does the line have given nodeId as an output
@@ -25,7 +25,7 @@ let makeScene = sceneIn => {
 			state: RESTING,
 			inputs,
 			outputs: sceneLine[0],
-			pos: { x: sceneLine[1][0], y: sceneLine[1][1] },
+			pos: { x: sceneLine[1][0], y: sceneLine[1][1], rad: sceneLine[1][2], strokeWidth: sceneLine[1][3] },
 			showCaption: false,
 			captionText: ''
 		}
@@ -57,7 +57,7 @@ export let initialScenes = {
 	showIntro: true,
 	activeScene: 0,
 	scenes: [
-		makeScene(constructionScene)
+		makeScene(energyScene)
 	]
 }
 
@@ -82,7 +82,7 @@ export let initialScenes = {
 // 					state: RESTING,
 // 					inputs: [],
 // 					outputs: [1],
-// 					pos: { x: 100, y: 200 },
+// 					pos: { x: 100, y: 200, rad: 30, strokeWidth: 26 },
 //					caption: 'this is a speech bubble'
 // 				},
 // 				{
