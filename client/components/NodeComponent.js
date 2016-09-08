@@ -4,15 +4,21 @@ import R from 'ramda'
 
 import { RESTING, MESSAGING } from './../constants/constants'
 import SpeechBubbleComponent from './SpeechBubbleComponent'
+import NodeIconComponent from './NodeIconComponent'
 
-let speechBubbleOffset = { x: 50, y: -50 }
+let speechBubbleOffset = { x:40, y:-80 }
+let nodeIconOffset = { x:-150, y:40 }
 
 class NodeComponent extends Component {
   render() {
 
+    // if (this.props.id == 'solar1') {
+    //   console.log(this.props)
+    // }
+
     const compositeStroke = '#3399FF'
     const atomicStroke = '#FFCE08'
-    const isComposite = (this.props.inputs === 2) ? true : false
+    const isComposite = R.equals(this.props.inputs, 2)
 
     let styleMessaging = {
       fill: "#0C0F1E",
@@ -30,12 +36,17 @@ class NodeComponent extends Component {
       transition: 'fill 1.0s'
     }
 
-    let bubbleX = this.props.x + speechBubbleOffset.x
-    let bubbleY = this.props.y + speechBubbleOffset.y
+    let bubbleX = this.props.pos.x + speechBubbleOffset.x
+    let bubbleY = this.props.pos.y + speechBubbleOffset.y
+
+    let iconX = this.props.pos.x + nodeIconOffset.x
+    let iconY = this.props.pos.y + nodeIconOffset.y
 
     let style = (R.equals(this.props.state, MESSAGING))? styleMessaging : styleResting
+
     return (
       <g>
+        { isComposite ? null: <NodeIconComponent x={iconX} y={iconY} src={this.props.icon} /> }
         <SpeechBubbleComponent x={bubbleX} y={bubbleY} width="100" height="50" text={this.props.captionText} visible={this.props.caption}/>
         <g onClick={() => { console.log(this.props.id)}} >
           <circle
@@ -47,13 +58,6 @@ class NodeComponent extends Component {
       </g>
     )
   }
-}
-
-let renderSpeechBubble = (text, x, y) => {
-  if (R.isEmpty(text) || R.isNil(text)) { return }
-  return (
-    <SpeechBubbleComponent x={x} y={y} width="100" height="50" text={text}/>
-  )
 }
 
 module.exports = NodeComponent

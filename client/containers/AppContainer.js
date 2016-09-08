@@ -87,7 +87,18 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent inputs={node.inputCount()} pos={node.pos} state={node.state} status={node.status} id={node.id} captionText={node.captionText} caption={node.showCaption} key={node.id} /> }
+let renderNode = node => {
+  return <NodeComponent
+    icon={node.icon}
+    inputs={node.inputCount()}
+    pos={node.pos}
+    state={node.state}
+    status={node.status}
+    id={node.id}
+    captionText={node.caption}
+    caption={node.showCaption}
+    key={node.id} />
+}
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {

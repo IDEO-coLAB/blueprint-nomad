@@ -14,14 +14,15 @@ import {
 const SUN_THRESHOLD = 5000
 
 class Node {
-	constructor(id) {
+	constructor(id, icon=null) {
 		this.state = {
 			id,
 			type: SCENE_NODE,
 			status: NORMAL,
 			state: RESTING,
-			pos: { x:186, y:387, rad:28, strokeWidth:10 },
+			pos: { x:null, y:null, rad:28, strokeWidth:10 },
 			caption: 'this is a speech bubble',
+			icon: icon,
 			showCaption: false,
 			inputCount: () => this._activationState.length
 		}
@@ -71,7 +72,7 @@ class Node {
 			this.state.caption = "It's sunny everywhere"
 		}
 
-		this.showCaption = true
+		this.state.showCaption = true
 		this.state.state = MESSAGING
 
 		this.dispatchState()
@@ -145,31 +146,37 @@ class Connection {
 // connections need input and output set
 // nodes only need outputs set
 
-const solar1 = new Node('solar1')
+
+const SOLAR_ICON = 'icon_solar_panel'
+const SMART_METER_ICON = 'icon_smart_meters'
+const PEAKER_ICON = 'icon_peaker_plant'
+
+
+const solar1 = new Node('solar1', SOLAR_ICON)
 const solar1ToEnergyPrediction = new Connection('solar1ToEnergyPrediction')
 
-const solar2 = new Node('solar2')
+const solar2 = new Node('solar2', SOLAR_ICON)
 const solar2ToEnergyPrediction = new Connection('solar2ToEnergyPrediction')
 
 const energyPrediction = new Node('energyPrediction')
 const energyPredictionToNeedPeakerPlant = new Connection('energyPredictionToNeedPeakerPlant')
 
-const energyMeters = new Node('energyMeters')
+const energyMeters = new Node('energyMeters', SMART_METER_ICON)
 const energyMetersToNeedPeakerPlant = new Connection('energyMetersToNeedPeakerPlant')
 
 const needPeakerPlant = new Node('needPeakerPlant')
 
 const needPeakerToPeaker = new Connection('needPeakerToPeaker')
-const peakerPlant = new Node('peakerPlant')
+const peakerPlant = new Node('peakerPlant', PEAKER_ICON)
 
 solar1.setInputSize(1)
 solar1._outputs.push(solar1ToEnergyPrediction)
-solar1.state.pos.x = 186
-solar1.state.pos.y = 387
+solar1.state.pos.x = 240
+solar1.state.pos.y = 360
 
 solar2.setInputSize(1)
 solar2._outputs.push(solar2ToEnergyPrediction)
-solar2.state.pos.x = 1294
+solar2.state.pos.x = 1350
 solar2.state.pos.y = 776
 
 solar1ToEnergyPrediction._input = solar1
