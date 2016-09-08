@@ -13,6 +13,15 @@ class NodeIconComponent extends Component {
 
     return (
     	<g transform={transform}>
+
+        <line
+          x1="85"
+          y1="15"
+          x2="150"
+          y2="-40"
+          strokeDasharray="9,4"
+          stroke="#FFCE08"
+          strokeWidth="3" />
         <foreignObject width="100" height="120" requiredExtensions="http://www.w3.org/1999/xhtml">
           <img height="100" src={src} />
         </foreignObject>

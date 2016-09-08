@@ -17,14 +17,14 @@ class Node {
 	constructor(id, icon=null) {
 		this.state = {
 			id,
-			type: SCENE_NODE,
+			icon: icon,
 			status: NORMAL,
 			state: RESTING,
-			pos: { x:null, y:null, rad:28, strokeWidth:10 },
-			caption: 'this is a speech bubble',
-			icon: icon,
+			type: SCENE_NODE,
 			showCaption: false,
-			inputCount: () => this._activationState.length
+			caption: 'this is my speech bubble',
+			pos: { x:null, y:null, rad:28, strokeWidth:10 },
+			inputCount: () => this._activationState.length,
 		}
 
 		this._outputs = []
