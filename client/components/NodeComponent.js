@@ -21,10 +21,6 @@ let renderNode = (node, x, y) => {
 class NodeComponent extends Component {
   render() {
 
-    // if (this.props.id == 'solar1') {
-    //   console.log(this.props)
-    // }
-
     const compositeStroke = '#3399FF'
     const atomicStroke = '#FFCE08'
     const isComposite = R.equals(this.props.inputs, 2)

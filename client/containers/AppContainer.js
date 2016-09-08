@@ -28,11 +28,11 @@ function mapDispatchToProps(dispatch) {
         obj.setDispatch(dispatch)
       }, sceneObjects)
 
-      sceneObjects[0].activate(0, 'NORMAL')
-      sceneObjects[1].activate(0, 'NORMAL')
+      sceneObjects[0].activate(0, 'ALERT')
+      sceneObjects[1].activate(0, 'ALERT')
 
       setTimeout(() => {
-        sceneObjects[6].activate(0, 'NORMAL')
+        sceneObjects[6].activate(0, 'ALERT')
       }, 2500)
     }
   }

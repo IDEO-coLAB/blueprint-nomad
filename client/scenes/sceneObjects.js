@@ -1,6 +1,6 @@
 import R from 'ramda'
 
-import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING, NORMAL, ALERT } from './../constants/constants'
+import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING, NORMAL, ALERT, PARTIAL_ALERT } from './../constants/constants'
 import {
 	SET_NODE_STATE, SET_NODE_CAPTION, SET_CONNECTION_STATE,
 	SET_OVERLAY, SET_INTRO, SET_ACTIVE_SCENE, SET_SCENE_CAPTION } from './../reducers/actions'
@@ -14,7 +14,7 @@ import {
 const SUN_THRESHOLD = 5000
 
 class Node {
-	constructor(id, icon=null) {
+	constructor(id, captions, icon=null) {
 		this.state = {
 			id,
 			icon: icon,
@@ -22,12 +22,13 @@ class Node {
 			state: RESTING,
 			type: SCENE_NODE,
 			showCaption: false,
-			caption: 'this is my speech bubble',
+			caption: captions.NORMAL,
 			pos: { x:null, y:null, rad:28, strokeWidth:10 },
 			inputCount: () => this._activationState.length,
 		}
 
 		this._outputs = []
+		this._captions = captions
 		this.dispatch = null
 
 		this._activationState = []
@@ -61,15 +62,15 @@ class Node {
 
 		else if (alert) {
 			this.state.status = ALERT
-			this.state.caption = "It's cloudy everywhere"
+			this.state.caption = this._captions[ALERT]
 		}
 
 		else if (partialAlert) {
-			this.state.caption = "It's partially cloudy"
+			this.state.caption = this._captions[PARTIAL_ALERT]
 		}
 
 		else if (allNormal) {
-			this.state.caption = "It's sunny everywhere"
+			this.state.caption = this._captions[NORMAL]
 		}
 
 		this.state.showCaption = true
@@ -80,6 +81,7 @@ class Node {
 		let self = this
 		setTimeout(() => {
 			self.state.status = NORMAL
+			self.state.caption = this._captions[NORMAL]
 			self.state.showCaption = false
 			self.state.state = RESTING
 
@@ -151,23 +153,50 @@ const SOLAR_ICON = 'icon_solar_panel'
 const SMART_METER_ICON = 'icon_smart_meters'
 const PEAKER_ICON = 'icon_peaker_plant'
 
+let solar1captions = {}
+solar1captions[NORMAL] = 'Solar: All sunny here :)'
+solar1captions[ALERT] = 'Solar: Clouds coming in!'
 
-const solar1 = new Node('solar1', SOLAR_ICON)
+let solar2captions = {}
+solar1captions[NORMAL] = 'Solar: All sunny here :)'
+solar2captions[ALERT] = 'Solar: Clouds coming in!'
+
+let energyPredictionCaptions = {}
+energyPredictionCaptions[NORMAL] = 'Prediction: Energy output is high'
+energyPredictionCaptions[PARTIAL_ALERT] = 'Prediciton: Energy output to drop by 50%'
+energyPredictionCaptions[ALERT] = 'Prediciton: Energy output to drop by 100%'
+
+
+let energyMetersCaptions = {}
+energyMetersCaptions[NORMAL] = 'Meters: Load is low'
+energyMetersCaptions[ALERT] = 'Meters: Load is high!'
+
+let needPeakerPlantCaptions = {}
+needPeakerPlantCaptions[NORMAL] = 'Peaker Monitor: No need for the Peaker'
+needPeakerPlantCaptions[PARTIAL_ALERT] = 'Peaker Monitor: May need the peaker plant soon'
+needPeakerPlantCaptions[ALERT] = 'Peaker Monitor: Fire up the Peaker!'
+
+let peakerCaptions = {}
+peakerCaptions[NORMAL] = 'Peaker: I am off',
+peakerCaptions[ALERT] = 'Peaker: I am turning on!'
+
+
+const solar1 = new Node('solar1', solar1captions, SOLAR_ICON)
 const solar1ToEnergyPrediction = new Connection('solar1ToEnergyPrediction')
 
-const solar2 = new Node('solar2', SOLAR_ICON)
+const solar2 = new Node('solar2', solar2captions, SOLAR_ICON)
 const solar2ToEnergyPrediction = new Connection('solar2ToEnergyPrediction')
 
-const energyPrediction = new Node('energyPrediction')
+const energyPrediction = new Node('energyPrediction', energyPredictionCaptions)
 const energyPredictionToNeedPeakerPlant = new Connection('energyPredictionToNeedPeakerPlant')
 
-const energyMeters = new Node('energyMeters', SMART_METER_ICON)
+const energyMeters = new Node('energyMeters', energyMetersCaptions, SMART_METER_ICON)
 const energyMetersToNeedPeakerPlant = new Connection('energyMetersToNeedPeakerPlant')
 
-const needPeakerPlant = new Node('needPeakerPlant')
+const needPeakerPlant = new Node('needPeakerPlant', needPeakerPlantCaptions)
 
 const needPeakerToPeaker = new Connection('needPeakerToPeaker')
-const peakerPlant = new Node('peakerPlant', PEAKER_ICON)
+const peakerPlant = new Node('peakerPlant', peakerCaptions, PEAKER_ICON)
 
 solar1.setInputSize(1)
 solar1._outputs.push(solar1ToEnergyPrediction)
@@ -177,7 +206,7 @@ solar1.state.pos.y = 360
 solar2.setInputSize(1)
 solar2._outputs.push(solar2ToEnergyPrediction)
 solar2.state.pos.x = 1350
-solar2.state.pos.y = 776
+solar2.state.pos.y = 876
 
 solar1ToEnergyPrediction._input = solar1
 solar1ToEnergyPrediction._output = [0, energyPrediction]

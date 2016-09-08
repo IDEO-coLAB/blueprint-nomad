@@ -1,14 +1,10 @@
 import React, {Component} from 'react'
 import R from 'ramda'
 
-import { RESTING, MESSAGING } from './../constants/constants'
-import { NODE_DEACTIVATE_TIMEOUT } from './../constants/settings'
-
 class NodeIconComponent extends Component {
   render() {
 
   	let transform = "translate(" + this.props.x + "," + this.props.y + ")"
-
     let src = `./../assets/images/${this.props.src}.png`
 
     return (

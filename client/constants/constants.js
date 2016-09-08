@@ -9,3 +9,4 @@ export const SCENE_CONNECTION = 'SCENE_CONNECTION'
 
 export const ALERT = 'ALERT'
 export const NORMAL = 'NORMAL'
+export const PARTIAL_ALERT = 'PARTIAL_ALERT'
