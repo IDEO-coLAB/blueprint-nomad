@@ -31,7 +31,8 @@ function mapDispatchToProps(dispatch) {
       sceneObjects[0].setSun(600)
       sceneObjects[0].activate()
 
-      // sceneObjects[1].setSun(6000)
+      sceneObjects[1].setSun(600)
+      sceneObjects[1].activate()
       
     }
   }
