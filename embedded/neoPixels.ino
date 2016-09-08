@@ -35,6 +35,7 @@ SYSTEM_MODE(AUTOMATIC);
 #define PIXEL_TYPE WS2812B
 #define BRIGHTNESS 80 // 0 - 255
 
+#define NUM_RINGS 7
 Adafruit_NeoPixel strips[] = {
   Adafruit_NeoPixel(PIXEL_COUNT, D0, PIXEL_TYPE),
   Adafruit_NeoPixel(PIXEL_COUNT, D1, PIXEL_TYPE),
@@ -49,25 +50,35 @@ Adafruit_NeoPixel strips[] = {
 int tick = 0;
 
 void setup() {
-  strips[0].setBrightness(BRIGHTNESS);
-  strips[0].begin();
-  strips[0].show(); // Initialize all pixels to 'off'
+  setupAll();
 }
 
 void loop() {
   
   delay(DELAY);
   tick = tick + 1;
-  for (int i=0; i < 24; i++) {
-    strips[0].setPixelColor(i, 255, 0, 0);
-    strips[0].show();
-  }
+  setRingColor(0, 0, 0, 255);
+  setRingColor(1, 0, 0, 255);
+  setRingColor(2, 0, 0, 255);
+  setRingColor(3, 0, 0, 255);
+
 
 }
 
-// void setRingColor(int ring, int r, int g, int b) {
+void setRingColor(int ring, int r, int g, int b) {
+  for (int i=0; i < 24; i++) {
+    strips[ring].setPixelColor(i, r, g, b);
+    strips[ring].show();
+  }
+}
 
-// }
+void setupAll() {
+  for (int i=0; i < NUM_RINGS; i++) {
+    strips[i].setBrightness(BRIGHTNESS);
+    strips[i].begin();
+    strips[i].show(); // Initialize all pixels to 'off'
+  }
+}
 
 
 
