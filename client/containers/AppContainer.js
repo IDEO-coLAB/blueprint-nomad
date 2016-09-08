@@ -30,6 +30,10 @@ function mapDispatchToProps(dispatch) {
 
       sceneObjects[0].activate(0, 'NORMAL')
       sceneObjects[1].activate(0, 'NORMAL')
+      
+      setTimeout(() => {
+        sceneObjects[6].activate(0, 'NORMAL')
+      }, 2500)
     }
   }
 }

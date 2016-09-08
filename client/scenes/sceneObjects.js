@@ -49,23 +49,27 @@ class Node {
 			&& R.not(waiting) 
 			&& R.any(R.equals(ALERT))(this._activationState)
 		let alert = R.all(R.equals(ALERT), this._activationState)
+		let allNormal = R.all(R.equals(NORMAL), this._activationState)
 
-		if (alert) {
+		if (waiting) {
+			return
+		}
+
+		else if (alert) {
 			this.state.status = ALERT
 			this.state.caption = "It's cloudy everywhere"
-			this.showCaption = true
-			this.state.state = MESSAGING
 		}
 
 		else if (partialAlert) {
 			this.state.caption = "It's partially cloudy"
-			this.showCaption = true
-			this.state.state = MESSAGING
 		}
 
-		else if (waiting) {
-			this.state.caption = "Waiting for more messages..."
-		}	
+		else if (allNormal) {
+			this.state.caption = "It's sunny everywhere"	
+		}
+
+		this.showCaption = true
+		this.state.state = MESSAGING
 
 		this.dispatchState()
 
@@ -118,9 +122,11 @@ class Connection {
 		this.dispatchState()
 
 		let self = this
-		// debugger
 		setTimeout(() => {
-			// debugger
+			if (this.state.id === 'energyPredictionToNeedPeakerPlant' 
+				|| this.state.id === 'energyMetersToNeedPeakerPlant') {
+				debugger
+			}
 			const idx = self._output[0]
 			const output = self._output[1]
 			output.activate(idx, this.state.status)
@@ -193,6 +199,7 @@ energyMetersToNeedPeakerPlant._input = energyMeters
 energyMetersToNeedPeakerPlant._output = [1, needPeakerPlant]
 
 needPeakerPlant.setInputSize(2)
+needPeakerPlant._outputs.push(needPeakerToPeaker)
 needPeakerPlant.state.pos.x = 700
 needPeakerPlant.state.pos.y = 1000
 
