@@ -8,7 +8,7 @@ class SfMapComponent extends Component {
       left: 0,
       top: 0,
       zIndex: -1,
-      opacity: 0.2
+      opacity: 1
     }
 
     return (
