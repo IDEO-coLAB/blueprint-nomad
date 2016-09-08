@@ -4,12 +4,14 @@ import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING, NORMAL, ALERT } from 
 import { 
 	SET_NODE_STATE, SET_NODE_CAPTION, SET_CONNECTION_STATE, 
 	SET_OVERLAY, SET_INTRO, SET_ACTIVE_SCENE, SET_SCENE_CAPTION } from './../reducers/actions'
-
+import { 
+	NODE_ACTIVATE_CONNECTION_TIMEOUT, 
+	NODE_DEACTIVATE_TIMEOUT, 
+	CONNECTION_DEACTIVATE_TIMEOUT, 
+	CONNECTION_ACTIVATE_NODE_TIMEOUT
+} from './../constants/settings'
+ 
 const SUN_THRESHOLD = 5000
-const NODE_ACTIVATE_CONNECTION_TIMEOUT = 1000
-const NODE_DEACTIVATE_TIMEOUT = 300
-const CONNECTION_DEACTIVATE_TIMEOUT = 3000
-const CONNECTION_ACTIVATE_NODE_TIMEOUT = 1000
 
 class Node {
 	constructor(id) {
@@ -51,6 +53,7 @@ class Node {
 		let alert = R.all(R.equals(ALERT), this._activationState)
 		let allNormal = R.all(R.equals(NORMAL), this._activationState)
 
+		debugger
 		if (waiting) {
 			return
 		}
@@ -84,10 +87,13 @@ class Node {
 			self.dispatchState()
 		}, NODE_DEACTIVATE_TIMEOUT)
 
-		// assuming that state.status isn't changed by the other timeout fxn
+		// get a local copy of self.state.status because
+		// above timeout might reset self.state.status before
+		// this timeout fires
+		let _cachedSelfStatus = self.state.status
 		setTimeout(() => {
 			R.forEach((connection) => {
-				connection.activate(self.state.status)
+				connection.activate(_cachedSelfStatus)
 			}, self._outputs)
 		}, NODE_ACTIVATE_CONNECTION_TIMEOUT)
 	}
