@@ -9,13 +9,22 @@ let speechBubbleOffset = { x: 50, y: -50 }
 
 class NodeComponent extends Component {
   render() {
+
+
+
     let styleMessaging = {
-      fill: "#53BCCF",
+      fill: "#0C0F1E",
+      fillOpacity: "1.0",
+      stroke: "#FFCE08",
+      strokeWidth: this.props.pos.strokeWidth,
       transition: 'fill 0.5s'
     }
 
     let styleResting = {
-      fill: "#CFD2D3",
+      fill: "#0C0F1E",
+      fillOpacity: "1.0",
+      stroke: "#FFCE08",
+      strokeWidth: this.props.pos.strokeWidth,
       transition: 'fill 1.0s'
     }
 
@@ -27,11 +36,11 @@ class NodeComponent extends Component {
       <g>
         <SpeechBubbleComponent x={bubbleX} y={bubbleY} width="100" height="50" text={this.props.captionText} visible={this.props.caption}/>
         <g onClick={() => { console.log(this.props.id)}} >
-          <circle 
-            style={style} 
-            cx={this.props.pos.x} 
-            cy={this.props.pos.y} 
-            r="40" />
+          <circle
+            style={style}
+            cx={this.props.pos.x}
+            cy={this.props.pos.y}
+            r={this.props.pos.rad} />
          </g>
       </g>
     )

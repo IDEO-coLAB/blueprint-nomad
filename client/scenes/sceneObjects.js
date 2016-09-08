@@ -1,16 +1,16 @@
 import R from 'ramda'
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING, NORMAL, ALERT } from './../constants/constants'
-import { 
-	SET_NODE_STATE, SET_NODE_CAPTION, SET_CONNECTION_STATE, 
+import {
+	SET_NODE_STATE, SET_NODE_CAPTION, SET_CONNECTION_STATE,
 	SET_OVERLAY, SET_INTRO, SET_ACTIVE_SCENE, SET_SCENE_CAPTION } from './../reducers/actions'
-import { 
-	NODE_ACTIVATE_CONNECTION_TIMEOUT, 
-	NODE_DEACTIVATE_TIMEOUT, 
-	CONNECTION_DEACTIVATE_TIMEOUT, 
+import {
+	NODE_ACTIVATE_CONNECTION_TIMEOUT,
+	NODE_DEACTIVATE_TIMEOUT,
+	CONNECTION_DEACTIVATE_TIMEOUT,
 	CONNECTION_ACTIVATE_NODE_TIMEOUT
 } from './../constants/settings'
- 
+
 const SUN_THRESHOLD = 5000
 
 class Node {
@@ -20,7 +20,7 @@ class Node {
 			type: SCENE_NODE,
 			status: NORMAL,
 			state: RESTING,
-			pos: { x: 100, y: 200, rad: 30, strokeWidth: 26 },
+			pos: { x:186, y:387, rad:28, strokeWidth:10 },
 			caption: 'this is a speech bubble',
 			showCaption: false
 		}
@@ -45,15 +45,14 @@ class Node {
 
 	activate(idx, status) {
 		this._activationState[idx] = status
-		
+
 		let waiting = R.any(R.isNil, this._activationState)
-		let partialAlert = (R.length(this._activationState) > 1) 
-			&& R.not(waiting) 
+		let partialAlert = (R.length(this._activationState) > 1)
+			&& R.not(waiting)
 			&& R.any(R.equals(ALERT))(this._activationState)
 		let alert = R.all(R.equals(ALERT), this._activationState)
 		let allNormal = R.all(R.equals(NORMAL), this._activationState)
 
-		debugger
 		if (waiting) {
 			return
 		}
@@ -68,7 +67,7 @@ class Node {
 		}
 
 		else if (allNormal) {
-			this.state.caption = "It's sunny everywhere"	
+			this.state.caption = "It's sunny everywhere"
 		}
 
 		this.showCaption = true
@@ -129,10 +128,6 @@ class Connection {
 
 		let self = this
 		setTimeout(() => {
-			if (this.state.id === 'energyPredictionToNeedPeakerPlant' 
-				|| this.state.id === 'energyMetersToNeedPeakerPlant') {
-				debugger
-			}
 			const idx = self._output[0]
 			const output = self._output[1]
 			output.activate(idx, this.state.status)
@@ -165,13 +160,13 @@ const peakerPlant = new Node('peakerPlant')
 
 solar1.setInputSize(1)
 solar1._outputs.push(solar1ToEnergyPrediction)
-solar1.state.pos.x = 100
-solar1.state.pos.y = 100
+solar1.state.pos.x = 186
+solar1.state.pos.y = 387
 
 solar2.setInputSize(1)
 solar2._outputs.push(solar2ToEnergyPrediction)
-solar2.state.pos.x = 600
-solar2.state.pos.y = 600
+solar2.state.pos.x = 1294
+solar2.state.pos.y = 776
 
 solar1ToEnergyPrediction._input = solar1
 solar1ToEnergyPrediction._output = [0, energyPrediction]
@@ -190,34 +185,34 @@ solar2ToEnergyPrediction._output = [1, energyPrediction]
 
 energyPrediction.setInputSize(1)
 energyPrediction._outputs.push(energyPredictionToNeedPeakerPlant)
-energyPrediction.state.pos.x = 500
-energyPrediction.state.pos.y = 800
+energyPrediction.state.pos.x = 1200
+energyPrediction.state.pos.y = 159
 
 energyPredictionToNeedPeakerPlant._input = energyPrediction
 energyPredictionToNeedPeakerPlant._output = [0, needPeakerPlant]
 
 energyMeters.setInputSize(1)
 energyMeters._outputs.push(energyMetersToNeedPeakerPlant)
-energyMeters.state.pos.x = 500
-energyMeters.state.pos.y = 1000
+energyMeters.state.pos.x = 413
+energyMeters.state.pos.y = 749
 
 energyMetersToNeedPeakerPlant._input = energyMeters
 energyMetersToNeedPeakerPlant._output = [1, needPeakerPlant]
 
 needPeakerPlant.setInputSize(2)
 needPeakerPlant._outputs.push(needPeakerToPeaker)
-needPeakerPlant.state.pos.x = 700
-needPeakerPlant.state.pos.y = 1000
+needPeakerPlant.state.pos.x = 896
+needPeakerPlant.state.pos.y = 477
 
 needPeakerToPeaker._input = needPeakerPlant
 needPeakerToPeaker._output = [0, peakerPlant]
 
 peakerPlant.setInputSize(1)
-peakerPlant.state.pos.x = 1100
-peakerPlant.state.pos.y = 1000
+peakerPlant.state.pos.x = 945
+peakerPlant.state.pos.y = 837
 
 export const sceneObjects = [
-	solar1, 
+	solar1,
 	solar2,
 	solar1ToEnergyPrediction,
 	solar2ToEnergyPrediction,
