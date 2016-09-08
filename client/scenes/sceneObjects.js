@@ -139,43 +139,83 @@ class Connection {
 
 const solar1 = new Node('solar1')
 const solar2 = new Node('solar2')
-const connection1 = new Connection('connection1')
-const connection2 = new Connection('connection2')
-const composite1 = new Node('composite1')
-const prediction = new Node('prediction')
-const connection3 = new Connection('connection3')
+const solar1ToEnergyPrediction = new Connection('solar1ToEnergyPrediction')
+const solar2ToEnergyPrediction = new Connection('solar2ToEnergyPrediction')
+// const cloudPrediction = new Node('cloudPrediction')
+const energyPrediction = new Node('energyPrediction')
+// const cloudPreToEnergyPre = new Connection('cloudPreToEnergyPre')
+const energyMeters = new Node('energyMeters')
+const energyMetersToNeedPeakerPlant = new Connection('energyMetersToNeedPeakerPlant')
+const energyPredictionToNeedPeakerPlant = new Connection('energyPredictionToNeedPeakerPlant')
+const needPeakerPlant = new Node('needPeakerPlant')
+const needPeakerToPeaker = new Connection('needPeakerToPeaker')
+const peakerPlant = new Node('peakerPlant')
 
 solar1.setInputSize(1)
-solar1._outputs.push(connection1)
+solar1._outputs.push(solar1ToEnergyPrediction)
 solar1.state.pos.x = 100
 solar1.state.pos.y = 100
 
 solar2.setInputSize(1)
-solar2._outputs.push(connection2)
+solar2._outputs.push(solar2ToEnergyPrediction)
 solar2.state.pos.x = 600
 solar2.state.pos.y = 600
 
-connection1._input = solar1
-connection1._output = [0, composite1]
+solar1ToEnergyPrediction._input = solar1
+solar1ToEnergyPrediction._output = [0, energyPrediction]
 
-connection2._input = solar2
-connection2._output = [1, composite1]
+solar2ToEnergyPrediction._input = solar2
+solar2ToEnergyPrediction._output = [1, energyPrediction]
 
-composite1.setInputSize(2)
-composite1._outputs.push(connection3)
-composite1.state.pos.x = 300
-composite1.state.pos.y = 500
+// cloudPrediction.setInputSize(2)
+// cloudPrediction._outputs.push(cloudPreToEnergyPre)
+// cloudPrediction.state.pos.x = 300
+// cloudPrediction.state.pos.y = 500
 
-connection3._input = composite1
+// cloudPreToEnergyPre._input = cloudPrediction
 // // this connection is input 0 of prediction
-connection3._output = [0, prediction]
+// cloudPreToEnergyPre._output = [0, energyPrediction]
 
-prediction.setInputSize(1)
-prediction.state.pos.x = 500
-prediction.state.pos.y = 800
+energyPrediction.setInputSize(1)
+energyPrediction._outputs.push(energyPredictionToNeedPeakerPlant)
+energyPrediction.state.pos.x = 500
+energyPrediction.state.pos.y = 800
 
+energyPredictionToNeedPeakerPlant._input = energyPrediction
+energyPredictionToNeedPeakerPlant._output = [0, needPeakerPlant]
 
-export const sceneObjects = [solar1, solar2, connection1, connection2, composite1, prediction, connection3]
+energyMeters.setInputSize(1)
+energyMeters._outputs.push(energyMetersToNeedPeakerPlant)
+energyMeters.state.pos.x = 500
+energyMeters.state.pos.y = 1000
+
+energyMetersToNeedPeakerPlant._input = energyMeters
+energyMetersToNeedPeakerPlant._output = [1, needPeakerPlant]
+
+needPeakerPlant.setInputSize(2)
+needPeakerPlant.state.pos.x = 700
+needPeakerPlant.state.pos.y = 1000
+
+needPeakerToPeaker._input = needPeakerPlant
+needPeakerToPeaker._output = [0, peakerPlant]
+
+peakerPlant.setInputSize(1)
+peakerPlant.state.pos.x = 1100
+peakerPlant.state.pos.y = 1000
+
+export const sceneObjects = [
+	solar1, 
+	solar2,
+	solar1ToEnergyPrediction,
+	solar2ToEnergyPrediction,
+	energyPrediction,
+	energyPredictionToNeedPeakerPlant,
+	energyMeters,
+	energyMetersToNeedPeakerPlant,
+	needPeakerPlant,
+	needPeakerToPeaker,
+	peakerPlant
+]
 
 
 

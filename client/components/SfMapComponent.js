@@ -13,7 +13,7 @@ class SfMapComponent extends Component {
 
     return (
     	<div style={style} >
-        <img src="/assets/images/sf-map.jpg"/>
+        <img width="1620" height="1080" src="/assets/images/sf-map.jpg"/>
       </div>
     )
   }
