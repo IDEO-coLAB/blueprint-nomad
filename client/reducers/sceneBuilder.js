@@ -19,8 +19,6 @@ let makeScene = sceneIn => {
 		return obj.state
 	}, sceneIn)
 
-	console.log(objectList)
-	console.log(sceneObjects)
 	return {
 		objects: objectList,
 		showSceneCaption: false,

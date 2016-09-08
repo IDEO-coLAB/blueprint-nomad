@@ -21,7 +21,6 @@ export let sceneReducer = function(appState=initialScenes, action) {
 		case SET_NODE_STATE:
 		case SET_CONNECTION_STATE: 
 			let cloned = updateNodeState(appState, action.payload)
-			console.log(cloned)
 			return cloned
 		case SET_NODE_CAPTION: 
 			cloned = R.clone(appState)

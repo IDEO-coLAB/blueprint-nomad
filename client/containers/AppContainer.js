@@ -28,12 +28,8 @@ function mapDispatchToProps(dispatch) {
         obj.setDispatch(dispatch)
       }, sceneObjects)
 
-      sceneObjects[0].setSun(600)
-      sceneObjects[0].activate()
-
-      sceneObjects[1].setSun(600)
-      sceneObjects[1].activate()
-      
+      sceneObjects[0].activate(0, 'NORMAL')
+      sceneObjects[1].activate(0, 'NORMAL')
     }
   }
 }
@@ -87,14 +83,14 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent pos={node.pos} state={node.state} id={node.id} captionText={node.captionText} caption={node.showCaption} /> }
+let renderNode = node => { return <NodeComponent pos={node.pos} state={node.state} id={node.id} captionText={node.captionText} caption={node.showCaption} key={node.id} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {
   let getFromId = _getObjectWithId(objects)
   let cin = getFromId(connectionInput(connection))
   let cout = getFromId(connectionOutput(connection))
-  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} state={connection.state} />
+  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} state={connection.state} key={connection.id} />
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
