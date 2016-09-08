@@ -9,6 +9,10 @@ import NodeIconComponent from './NodeIconComponent'
 let speechBubbleOffset = { x:40, y:-80 }
 let nodeIconOffset = { x:-150, y:40 }
 
+let renderNodeIcon = (node, x, y) => {
+  node.props.icon ? null: <NodeIconComponent x={x} y={x} src={node.props.icon} />
+}
+
 class NodeComponent extends Component {
   render() {
 
@@ -46,7 +50,7 @@ class NodeComponent extends Component {
 
     return (
       <g>
-        { isComposite ? null: <NodeIconComponent x={iconX} y={iconY} src={this.props.icon} /> }
+        { renderNodeIcon(this, iconX, iconY) }
         <SpeechBubbleComponent x={bubbleX} y={bubbleY} width="100" height="50" text={this.props.captionText} visible={this.props.caption}/>
         <g onClick={() => { console.log(this.props.id)}} >
           <circle
