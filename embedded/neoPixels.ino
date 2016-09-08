@@ -11,15 +11,33 @@
 // #include "neopixel/neopixel.h" // use for Build IDE
 #include "neopixel.h" // use for local build
 
-#define DELAY 1000 
-int tick = 0;
+// #define DELAY 50 // good for slower
+#define DELAY 25 
+int fastTick = 0;
+int slowTick = 0;
 
-#define CHASE_SIZE 24
-float CHASE[] = {
-  1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 
-  0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
-  0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1
-};
+#define CHASE_SIZE 3
+// float CHASE[] = {
+//   1.0, 0.5, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 
+//   0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+//   0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.5
+// };
+
+int chaseColor1Red[] =   { 10, 15, 30, 15, 10 };
+int chaseColor1Green[] = { 10, 15, 30, 15, 10 };
+int chaseColor1Blue[] =  { 10, 15, 30, 15, 10 };
+
+int chaseColor2Red[] =    { 10, 15, 30, 15, 10 };
+int chaseColor2Green[] =  { 0,  0,  0,  0,  0 };
+int chaseColor2Blue[] =   { 10, 15, 30, 15, 10 };
+
+#define FAST_1 0
+#define FAST_2 1
+#define SLOW_1 2
+#define SLOW_2 3
+#define OFF 4
+
+int ringState[] = {FAST_1, OFF, OFF, OFF, OFF, OFF, OFF};
 
 SYSTEM_MODE(AUTOMATIC);
 
@@ -47,25 +65,28 @@ void setup() {
 void loop() {
   
   delay(DELAY);
-  tick = tick + 1;
+  fastTick = fastTick + 1;
+  if (fastTick % 2 == 0) {
+    slowTick = slowTick + 1;
+  }
 
-  setRingColor(0, 0, 0, 255);
-  chase(1, tick, 255, 255, 255);
-
-
+  chase(0, fastTick, 0);
+  chase(1, slowTick, 0);
+  chase(2, fastTick, 0);
+  chase(3, slowTick, 0);
+  chase(4, fastTick, 0);
+  chase(5, fastTick, 0);
+  chase(6, fastTick, 0);
 }
 
-void chase(int ring, int tick, int r, int g, int b) {
-  for (int i=0; i < CHASE_SIZE; i++) {
-    int index = (tick + i) % CHASE_SIZE;
-    float multiplier = CHASE[index];
-    int red = int(float(r) * multiplier);
-    int green = int(float(g) * multiplier);
-    int blue = int(float(b) * multiplier);
+void chase(int ring, int tick, int state) {
+  for (int i=0; i < 5; i++) {
+    int pixel = (tick + i) % 24;
+    int color = chaseColor1Red[i];
 
-    strips[ring].setPixelColor(i, red, green, blue);
-    strips[ring].show();
+    strips[ring].setPixelColor(pixel, color, color, color);
   }
+  strips[ring].show();
 }
 
 void setRingColor(int ring, int r, int g, int b) {
