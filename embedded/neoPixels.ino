@@ -25,12 +25,13 @@ int slowTick = 0;
 
 #define COLORS_SIZE 5
 /* 2 color palettes x 5 pixels x rgb */
-int colors[2][5][3] = { 
+int colors[3][5][3] = { 
+  { {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0 } },
   { {10, 10, 10}, {15, 15, 15}, {30, 30, 30}, {15, 15, 15}, {10, 10, 10 } },
   { {10, 0, 0}, {15, 0, 0}, {30, 0, 0}, {15, 0, 0}, {10, 0, 0 } }
 };
 
-int ringColor[] = {0, 0, 0, 0, 1, 1, 1};
+int ringColor[] = {1, 0, 0, 0, 0, 0, 0};
 int ringSpeed[] = {0, 1, 0, 1, 0, 1, 0};
 
 
@@ -53,8 +54,22 @@ Adafruit_NeoPixel strips[] = {
   Adafruit_NeoPixel(PIXEL_COUNT, D6, PIXEL_TYPE),
 };
 
+int message(String msg) {
+  /* a message '3,0,1' means set ring 3 to be slow with color 1 */
+  int ring = msg.substring(0, 1).toInt();
+  int speed = msg.substring(2, 3).toInt();
+  int color = msg.substring(4, 5).toInt();
+
+  ringColor[ring] = color;
+  ringSpeed[ring] = speed;
+  return 1;
+  // setRingColor(color, 0, 0, 255);
+
+}
+
 void setup() {
   setupAll();
+  Particle.function("message", message);
 }
 
 void loop() {
