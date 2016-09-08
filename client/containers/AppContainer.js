@@ -30,7 +30,7 @@ function mapDispatchToProps(dispatch) {
 
       sceneObjects[0].activate(0, 'NORMAL')
       sceneObjects[1].activate(0, 'NORMAL')
-      
+
       setTimeout(() => {
         sceneObjects[6].activate(0, 'NORMAL')
       }, 2500)
@@ -87,7 +87,7 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent pos={node.pos} state={node.state} status={node.status} id={node.id} captionText={node.captionText} caption={node.showCaption} key={node.id} /> }
+let renderNode = node => { return <NodeComponent inputs={node.inputCount()} pos={node.pos} state={node.state} status={node.status} id={node.id} captionText={node.captionText} caption={node.showCaption} key={node.id} /> }
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {

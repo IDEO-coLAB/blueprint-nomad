@@ -10,12 +10,14 @@ let speechBubbleOffset = { x: 50, y: -50 }
 class NodeComponent extends Component {
   render() {
 
-
+    const compositeStroke = '#3399FF'
+    const atomicStroke = '#FFCE08'
+    const isComposite = (this.props.inputs === 2) ? true : false
 
     let styleMessaging = {
       fill: "#0C0F1E",
       fillOpacity: "1.0",
-      stroke: "#FFCE08",
+      stroke: isComposite ? compositeStroke : atomicStroke,
       strokeWidth: this.props.pos.strokeWidth,
       transition: 'fill 0.5s'
     }
@@ -23,7 +25,7 @@ class NodeComponent extends Component {
     let styleResting = {
       fill: "#0C0F1E",
       fillOpacity: "1.0",
-      stroke: "#FFCE08",
+      stroke: isComposite ? compositeStroke : atomicStroke,
       strokeWidth: this.props.pos.strokeWidth,
       transition: 'fill 1.0s'
     }

@@ -22,7 +22,8 @@ class Node {
 			state: RESTING,
 			pos: { x:186, y:387, rad:28, strokeWidth:10 },
 			caption: 'this is a speech bubble',
-			showCaption: false
+			showCaption: false,
+			inputCount: () => this._activationState.length
 		}
 
 		this._outputs = []
@@ -145,16 +146,19 @@ class Connection {
 // nodes only need outputs set
 
 const solar1 = new Node('solar1')
-const solar2 = new Node('solar2')
 const solar1ToEnergyPrediction = new Connection('solar1ToEnergyPrediction')
+
+const solar2 = new Node('solar2')
 const solar2ToEnergyPrediction = new Connection('solar2ToEnergyPrediction')
-// const cloudPrediction = new Node('cloudPrediction')
+
 const energyPrediction = new Node('energyPrediction')
-// const cloudPreToEnergyPre = new Connection('cloudPreToEnergyPre')
+const energyPredictionToNeedPeakerPlant = new Connection('energyPredictionToNeedPeakerPlant')
+
 const energyMeters = new Node('energyMeters')
 const energyMetersToNeedPeakerPlant = new Connection('energyMetersToNeedPeakerPlant')
-const energyPredictionToNeedPeakerPlant = new Connection('energyPredictionToNeedPeakerPlant')
+
 const needPeakerPlant = new Node('needPeakerPlant')
+
 const needPeakerToPeaker = new Connection('needPeakerToPeaker')
 const peakerPlant = new Node('peakerPlant')
 
@@ -174,16 +178,7 @@ solar1ToEnergyPrediction._output = [0, energyPrediction]
 solar2ToEnergyPrediction._input = solar2
 solar2ToEnergyPrediction._output = [1, energyPrediction]
 
-// cloudPrediction.setInputSize(2)
-// cloudPrediction._outputs.push(cloudPreToEnergyPre)
-// cloudPrediction.state.pos.x = 300
-// cloudPrediction.state.pos.y = 500
-
-// cloudPreToEnergyPre._input = cloudPrediction
-// // this connection is input 0 of prediction
-// cloudPreToEnergyPre._output = [0, energyPrediction]
-
-energyPrediction.setInputSize(1)
+energyPrediction.setInputSize(2)
 energyPrediction._outputs.push(energyPredictionToNeedPeakerPlant)
 energyPrediction.state.pos.x = 1200
 energyPrediction.state.pos.y = 159
