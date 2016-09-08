@@ -12,7 +12,7 @@
 #include "neopixel.h" // use for local build
 
 // #define DELAY 50 // good for slower
-#define DELAY 25 
+#define DELAY 12 
 int fastTick = 0;
 int slowTick = 0;
 
@@ -23,6 +23,7 @@ int slowTick = 0;
 //   0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.5
 // };
 
+#define COLORS_SIZE 5
 int chaseColor1Red[] =   { 10, 15, 30, 15, 10 };
 int chaseColor1Green[] = { 10, 15, 30, 15, 10 };
 int chaseColor1Blue[] =  { 10, 15, 30, 15, 10 };
@@ -31,11 +32,11 @@ int chaseColor2Red[] =    { 10, 15, 30, 15, 10 };
 int chaseColor2Green[] =  { 0,  0,  0,  0,  0 };
 int chaseColor2Blue[] =   { 10, 15, 30, 15, 10 };
 
-#define FAST_1 0
-#define FAST_2 1
-#define SLOW_1 2
-#define SLOW_2 3
-#define OFF 4
+const int FAST_1 = 0;
+const int FAST_2 = 1;
+const int SLOW_1 = 2;
+const int SLOW_2 = 3;
+const int OFF = 4;
 
 int ringState[] = {FAST_1, OFF, OFF, OFF, OFF, OFF, OFF};
 
@@ -64,27 +65,51 @@ void setup() {
 
 void loop() {
   
-  delay(DELAY);
+  // delay(DELAY);
   fastTick = fastTick + 1;
   if (fastTick % 2 == 0) {
     slowTick = slowTick + 1;
   }
 
-  chase(0, fastTick, 0);
-  chase(1, slowTick, 0);
-  chase(2, fastTick, 0);
-  chase(3, slowTick, 0);
-  chase(4, fastTick, 0);
-  chase(5, fastTick, 0);
-  chase(6, fastTick, 0);
+  for (int i=0; i < NUM_RINGS; i++) {
+    int state = ringState[i];
+    if (state == SLOW_1) {
+      chase(i, slowTick, SLOW_1);
+    } 
+
+    else if (state == SLOW_2) {
+      chase(i, slowTick, SLOW_2);
+    } 
+
+    else if (state == FAST_1) {
+      chase(i, fastTick, FAST_1);
+    } 
+
+    else if (state == FAST_2) {
+      chase(i, fastTick, FAST_2);
+    } 
+
+    else {
+      setRingColor(i, 0, 0, 0);
+    }
+  }
 }
 
 void chase(int ring, int tick, int state) {
-  for (int i=0; i < 5; i++) {
+  int red = 0; int green = 0; int blue = 0;
+  
+  for (int i=0; i < COLORS_SIZE; i++) {
     int pixel = (tick + i) % 24;
-    int color = chaseColor1Red[i];
-
-    strips[ring].setPixelColor(pixel, color, color, color);
+    if (state == FAST_1 || state == SLOW_1) {
+      red = chaseColor1Red[i];
+      green = chaseColor1Green[i];
+      blue = chaseColor1Blue[i];
+    } else {
+      red = chaseColor2Red[i];
+      green = chaseColor2Green[i];
+      blue = chaseColor2Blue[i];
+    }
+    strips[ring].setPixelColor(pixel, red, green, blue);
   }
   strips[ring].show();
 }
