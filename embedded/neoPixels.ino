@@ -11,21 +11,15 @@
 // #include "neopixel/neopixel.h" // use for Build IDE
 #include "neopixel.h" // use for local build
 
-/* ======================= prototypes =============================== */
+#define DELAY 1000 
+int tick = 0;
 
-uint32_t Wheel(byte WheelPos);
-uint8_t red(uint32_t c);
-uint8_t green(uint32_t c);
-uint8_t blue(uint32_t c);
-void colorWipe(uint32_t c, uint8_t wait);
-void pulseWhite(uint8_t wait);
-void rainbowFade2White(uint8_t wait, int rainbowLoops, int whiteLoops);
-void whiteOverRainbow(uint8_t wait, uint8_t whiteSpeed, uint8_t whiteLength);
-void fullWhite();
-void rainbowCycle(uint8_t wait);
-void rainbow(uint8_t wait);
-
-/* ======================= rgbw-strandtest.cpp ====================== */
+#define CHASE_SIZE 24
+float CHASE[] = {
+  1.0, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 
+  0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1,
+  0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1, 0.1
+};
 
 SYSTEM_MODE(AUTOMATIC);
 
@@ -46,9 +40,6 @@ Adafruit_NeoPixel strips[] = {
   Adafruit_NeoPixel(PIXEL_COUNT, D6, PIXEL_TYPE),
 };
 
-#define DELAY 50 
-int tick = 0;
-
 void setup() {
   setupAll();
 }
@@ -57,12 +48,24 @@ void loop() {
   
   delay(DELAY);
   tick = tick + 1;
+
   setRingColor(0, 0, 0, 255);
-  setRingColor(1, 0, 0, 255);
-  setRingColor(2, 0, 0, 255);
-  setRingColor(3, 0, 0, 255);
+  chase(1, tick, 255, 255, 255);
 
 
+}
+
+void chase(int ring, int tick, int r, int g, int b) {
+  for (int i=0; i < CHASE_SIZE; i++) {
+    int index = (tick + i) % CHASE_SIZE;
+    float multiplier = CHASE[index];
+    int red = int(float(r) * multiplier);
+    int green = int(float(g) * multiplier);
+    int blue = int(float(b) * multiplier);
+
+    strips[ring].setPixelColor(i, red, green, blue);
+    strips[ring].show();
+  }
 }
 
 void setRingColor(int ring, int r, int g, int b) {
