@@ -3,7 +3,6 @@ import Particle from 'particle-api-js'
 import R from 'ramda'
 
 import { firebaseUrl, fbConfig } from './../constants/firebaseConfig'
-import { particleConfig } from './../constants/particleConfig'
 import { FIREBASE_DEMO_PAYLOAD, FIREBASE_DEMO_RELAX, NOTIFY_PARTICLE } from './actions'
 
 // Firebase
