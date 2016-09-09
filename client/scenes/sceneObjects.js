@@ -11,6 +11,19 @@ import {
 	CONNECTION_ACTIVATE_NODE_TIMEOUT
 } from './../constants/settings'
 
+import { setLed } from './../utils/led'
+
+const ledMap = {
+	solar1: 0,
+	solar2: 1,
+	energyPrediction: 2,
+	energyMeters: 3
+	needPeakerPlant: 4,
+	peakerPlant: 5
+}
+
+setLed(0, 0, 0)
+
 const SUN_THRESHOLD = 5000
 
 class Node {
@@ -63,6 +76,7 @@ class Node {
 		else if (alert) {
 			this.state.status = ALERT
 			this.state.caption = this._captions[ALERT]
+			setLed(ledMap[this.id], 1, 1)
 		}
 
 		else if (partialAlert) {
