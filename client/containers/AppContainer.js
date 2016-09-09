@@ -13,7 +13,7 @@ import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
 import { sceneCommands } from './../scenes/sceneCommands'
-import { sceneObjects } from './../scenes/sceneObjects'
+import { sceneObjects, notifyParticle } from './../scenes/sceneObjects'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -24,16 +24,26 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     startScenes: function() {
-      R.forEach((obj) => {
-        obj.setDispatch(dispatch)
-      }, sceneObjects)
 
-      sceneObjects[0].activate(0, 'ALERT')
-      sceneObjects[1].activate(0, 'ALERT')
+      let promises = R.map((n) => notifyParticle(`${n},1,0`), R.range(0,6))
+      Promise.all(promises)
+        .then(() => {
 
-      setTimeout(() => {
-        sceneObjects[6].activate(0, 'ALERT')
-      }, 2500)
+          // setTimeout(() => {
+          //   R.forEach((obj) => {
+          //     obj.setDispatch(dispatch)
+          //   }, sceneObjects)
+
+          //   sceneObjects[0].activate(0, 'ALERT')
+          //   sceneObjects[1].activate(0, 'ALERT')
+
+          //   setTimeout(() => {
+          //     sceneObjects[6].activate(0, 'ALERT')
+          //   }, 2500)
+          // }, 10000)
+
+        })
+
     }
   }
 }

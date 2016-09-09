@@ -11,6 +11,36 @@ import {
 	CONNECTION_ACTIVATE_NODE_TIMEOUT
 } from './../constants/settings'
 
+import Particle from 'particle-api-js'
+import { particleConfig } from './../constants/particleConfig'
+
+const particle = new Particle()
+const particleDevice = R.head(particleConfig.devices)
+
+particle.login({ username: particleConfig.username, password: particleConfig.password })
+	.catch((err) => {
+		console.error('Unable to log into Particle!')
+	})
+
+export const notifyParticle = (arg) => {
+	var fnPr = particle.callFunction({ deviceId: particleDevice.id, name: 'message', argument: arg, auth: particleDevice.token });
+	return fnPr.then((result) => {
+    console.log('Partcle PNR call succes:', result);
+  })
+  .catch((err) => {
+    console.log('Partcle PNR error called:', err);
+  })
+}
+
+const particleIdMap = {
+	solar1: 0,
+	solar2: 1,
+	energyPrediction: 2,
+	energyMeters: 3,
+	needPeakerPlant: 4,
+	peakerPlant: 5,
+}
+
 const SUN_THRESHOLD = 5000
 
 class Node {
@@ -61,6 +91,8 @@ class Node {
 		}
 
 		else if (alert) {
+			let id = particleIdMap[this.state.id]
+			if (id === 0 || id) notifyParticle(`${id},1,2`)
 			this.state.status = ALERT
 			this.state.caption = this._captions[ALERT]
 		}
@@ -81,7 +113,6 @@ class Node {
 		let self = this
 		setTimeout(() => {
 			self.state.status = NORMAL
-			self.state.caption = this._captions[NORMAL]
 			self.state.showCaption = false
 			self.state.state = RESTING
 
@@ -149,6 +180,7 @@ class Connection {
 // nodes only need outputs set
 
 
+
 const SOLAR_ICON = 'icon_solar_panel'
 const SMART_METER_ICON = 'icon_smart_meters'
 const PEAKER_ICON = 'icon_peaker_plant'
@@ -165,7 +197,6 @@ let energyPredictionCaptions = {}
 energyPredictionCaptions[NORMAL] = 'Prediction: Energy output is high'
 energyPredictionCaptions[PARTIAL_ALERT] = 'Prediciton: Energy output to drop by 50%'
 energyPredictionCaptions[ALERT] = 'Prediciton: Energy output to drop by 100%'
-
 
 let energyMetersCaptions = {}
 energyMetersCaptions[NORMAL] = 'Meters: Load is low'
@@ -255,41 +286,3 @@ export const sceneObjects = [
 	needPeakerToPeaker,
 	peakerPlant
 ]
-
-
-
-
-
-
-// nodes can have multiple inputs and multiple outputs
-// connections can only have 1 input and 1 output
-// for simplicity, we always use array to store inputs and outputs, even
-// if there's only 1
-// export const initialScenes = {
-// 	showOverlay: true,
-//  showIntro: true,
-// 	activeScene: 0,
-// 	scenes: [
-// 		{
-// 			// an object is either a node or a connection
-// 			objects: [
-// 				{
-// 					id: 0,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200, rad: 30, strokeWidth: 26 },
-//					caption: 'this is a speech bubble'
-// 				},
-// 				{
-// 					id: 1,
-// 					type: SCENE_CONNECTION,
-// 					state: RESTING,
-// 					inputs: [0],
-// 					outputs: [2]
-// 				},
-// 			]
-// 		}
-// 	]
-// }
