@@ -14,3 +14,4 @@ export const ALERT = 'ALERT'
 export const NORMAL = 'NORMAL'
 export const PARTIAL_ALERT = 'PARTIAL_ALERT'
 
+export const LIGHT_THRESHOLD = 750

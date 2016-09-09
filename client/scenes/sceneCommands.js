@@ -5,19 +5,21 @@ import { RESTING, MESSAGING } from './../constants/constants'
 export let sceneCommands = [
 
 	intro(false),
-	overlay(false)
+	overlay(false),
 
-	// // Turn on solar array
-	// ncap(0, 'Lots of sun here'),
-	// pause(1),
-	// ncap(1, 'Lots of sun here, too'),
-	// [ non(0), non(1) ],
+
+	// Turn on solar array
+	ncap(0, 'Lots of sun here'),
+	non(0),
+	pause(),
+	ncap(1, 'Lots of sun here, too'),
+	non(1),
+	pause(),
+
 
 	// ping
 	[ con('0-2'), con('1-2') ],
 	[ coff('0-2'), coff('1-2') ],
-
-	pause(),
 
 	[ noff(0), ncap(0, null), noff(1), ncap(1, null) ],
 	[ non(2), ncap(2, 'Plenty of sun in the region') ],
