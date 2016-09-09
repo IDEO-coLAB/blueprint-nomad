@@ -67,8 +67,19 @@ class Node {
 		this.dispatch({ type: SET_NODE_STATE, payload: this.state })
 	}
 
-	setStatus(idx, status) {
+	setInputStatus(idx, status) {
 		this._activationState[idx] = status
+	}
+
+	setSelfStatus(status) {
+		this.state.status = status
+		if (status == ALERT) {
+			setLed(ledMap[this.state.id], 1, 2)
+		}
+
+		if (status == NORMAL) {
+			setLed(ledMap[this.state.id], 0, 1)
+		}
 	}
 
 	activate(idx=null, status=null) {
@@ -88,9 +99,8 @@ class Node {
 		}
 
 		if (alert) {
-			this.state.status = ALERT
+			this.setSelfStatus(ALERT)
 			this.state.caption = this._captions[ALERT]
-			setLed(ledMap[this.state.id], 0, 2)
 		}
 
 		else if (partialAlert) {
