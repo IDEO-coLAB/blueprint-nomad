@@ -13,7 +13,16 @@ import {
 
 import { setLed } from './../utils/led'
 
-export const sceneInit = () => {
+//
+const LAST_NODE_ID = 'peakerPlant'
+
+// Func to replay the scene
+let replay = null
+
+export const setupObjects = (replayFn) => {
+	// Our replay function
+	replay = replayFn
+
 	R.forEach((n) => {
 		setLed(n, 0, 0)
 	}, R.range(0, 7))
@@ -87,6 +96,10 @@ class Node {
 			this._activationState[idx] = status
 		}
 
+		if (this.state.id === 'solar2') {
+			debugger
+		}
+
 		let waiting = R.any(R.isNil, this._activationState)
 		let partialAlert = (R.length(this._activationState) > 1)
 			&& R.not(waiting)
@@ -104,6 +117,7 @@ class Node {
 		}
 
 		else if (partialAlert) {
+			this.setSelfStatus(ALERT)
 			this.state.caption = this._captions[PARTIAL_ALERT]
 		}
 
@@ -118,13 +132,19 @@ class Node {
 
 		let self = this
 		setTimeout(() => {
-			self.state.status = NORMAL
+			self.setSelfStatus(NORMAL)
 			self.state.showCaption = false
 			self.state.state = RESTING
 
 			let activationStateLength = R.length(self._activationState)
 			self._activationState = R.repeat(null, activationStateLength)
 			self.dispatchState()
+
+			// If the last node is shutting down, replay the scene
+			if ((self.state.id === LAST_NODE_ID) && replay) {
+				replay()
+			}
+
 		}, NODE_DEACTIVATE_TIMEOUT)
 
 		// get a local copy of self.state.status because
@@ -191,8 +211,6 @@ class Connection {
 // connections need input and output set
 // nodes only need outputs set
 
-
-
 const SOLAR_ICON = 'icon_solar_panel'
 const SMART_METER_ICON = 'icon_smart_meters'
 const PEAKER_ICON = 'icon_peaker_plant'
@@ -202,7 +220,7 @@ solar1captions[NORMAL] = 'Solar: All sunny here :)'
 solar1captions[ALERT] = 'Solar: Clouds coming in!'
 
 let solar2captions = {}
-solar1captions[NORMAL] = 'Solar: All sunny here :)'
+solar2captions[NORMAL] = 'Solar: All sunny here :)'
 solar2captions[ALERT] = 'Solar: Clouds coming in!'
 
 let energyPredictionCaptions = {}

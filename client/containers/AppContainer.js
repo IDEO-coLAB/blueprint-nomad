@@ -13,7 +13,7 @@ import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { listenFirebase } from './../reducers/firebase'
 import { sceneCommands } from './../scenes/sceneCommands'
-import { sceneObjects, sceneInit } from './../scenes/sceneObjects'
+import { sceneObjects, setupObjects } from './../scenes/sceneObjects'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -24,22 +24,47 @@ function mapStateToProps(state, ownProps) {
 function mapDispatchToProps(dispatch) {
   return {
     startScenes: function() {
-      sceneInit().then(() => {
-        R.forEach((obj) => {
-          obj.setDispatch(dispatch)
-        }, sceneObjects)
 
-        listenFirebase(sceneObjects[0], sceneObjects[1])
+      const solar0 = sceneObjects[0]
+      const solar1 = sceneObjects[1]
 
+      // give each node and connection the ability to dispatch
+      R.forEach((obj) => {
+        obj.setDispatch(dispatch)
+      }, sceneObjects)
+
+      // set the solar panels to listen to firebase events
+      listenFirebase(sceneObjects[0], sceneObjects[1])
+
+      const initSolarPanels = () => {
+        const activationState0 = solar0._activationState[0]
+        const activationState1 = solar1._activationState[0]
+
+        if (R.isNil(activationState0)) solar0.setInputStatus(0, 'NORMAL')
+        if (R.isNil(activationState1)) solar1.setInputStatus(0, 'NORMAL')
+
+        solar0.activate()
+        solar1.activate()
+      }
+
+      const initScene = () => {
+        console.log('scene about to init')
         setTimeout(() => {
-          sceneObjects[0].activate()
-          sceneObjects[1].activate()
+          initSolarPanels()
         }, 5000)
 
         setTimeout(() => {
           sceneObjects[6].activate(0, 'ALERT')
         }, 10000)
-      })
+      }
+
+      setupObjects(initScene).then(initScene)
+
+
+
+
+
+
     }
   }
 }

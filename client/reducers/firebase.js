@@ -43,7 +43,7 @@ export const listenFirebase = (solar0, solar1) => {
 					break;
 			}
 
-	    console.log(sensor, payload, status)
+	    // console.log(sensor, payload, status)
 	  })
 	}, dbs)
 	return Promise.resolve()
