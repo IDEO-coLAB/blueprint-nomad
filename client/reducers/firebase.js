@@ -36,10 +36,10 @@ export const listenFirebase = (solar0, solar1) => {
 
 			switch (sensor) {
 				case LIGHT_0:
-					solar0.setInputStatus(0, status)
+					solar0.setSelfStatus(status)
 					break;
 				case LIGHT_1:
-					solar1.setInputStatus(0, status)
+					solar1.setSelfStatus(status)
 					break;
 			}
 

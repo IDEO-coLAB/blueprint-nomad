@@ -33,8 +33,8 @@ export const setupObjects = (replayFn) => {
 	})
 }
 export const ledMap = {
-	solar1: 0,
-	solar2: 1,
+	solar1: 1,
+	solar2: 0,
 	energyPrediction: 2,
 	energyMeters: 3,
 	needPeakerPlant: 4,
@@ -87,17 +87,15 @@ class Node {
 		}
 
 		if (status == NORMAL) {
-			setLed(ledMap[this.state.id], 0, 1)
+			// node always turns this off directly when state goes
+			// from MESSAGING to RESTING (state not status)
+			// setLed(ledMap[this.state.id], 0, 1)
 		}
 	}
 
 	activate(idx=null, status=null) {
 		if (R.is(Number, idx) && R.is(String, status)) {
 			this._activationState[idx] = status
-		}
-
-		if (this.state.id === 'solar2') {
-			debugger
 		}
 
 		let waiting = R.any(R.isNil, this._activationState)
@@ -123,6 +121,7 @@ class Node {
 
 		else if (allNormal) {
 			this.state.caption = this._captions[NORMAL]
+			setLed(ledMap[this.state.id], 1, 1)
 		}
 
 		this.state.showCaption = true
@@ -131,6 +130,8 @@ class Node {
 		this.dispatchState()
 
 		let self = this
+
+		// deactivate the node
 		setTimeout(() => {
 			self.setSelfStatus(NORMAL)
 			self.state.showCaption = false
@@ -139,6 +140,8 @@ class Node {
 			let activationStateLength = R.length(self._activationState)
 			self._activationState = R.repeat(null, activationStateLength)
 			self.dispatchState()
+
+			setLed(ledMap[this.state.id], 1, 0)
 
 			// If the last node is shutting down, replay the scene
 			if ((self.state.id === LAST_NODE_ID) && replay) {
