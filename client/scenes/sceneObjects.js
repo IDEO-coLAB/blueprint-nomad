@@ -29,7 +29,7 @@ export const ledMap = {
 	energyPrediction: 2,
 	energyMeters: 3,
 	needPeakerPlant: 4,
-	peakerPlant: 6	
+	peakerPlant: 6
 }
 
 const SUN_THRESHOLD = 5000
@@ -67,8 +67,14 @@ class Node {
 		this.dispatch({ type: SET_NODE_STATE, payload: this.state })
 	}
 
-	activate(idx, status) {
+	setStatus(idx, status) {
 		this._activationState[idx] = status
+	}
+
+	activate(idx=null, status=null) {
+		if (R.is(Number, idx) && R.is(String, status)) {
+			this._activationState[idx] = status
+		}
 
 		let waiting = R.any(R.isNil, this._activationState)
 		let partialAlert = (R.length(this._activationState) > 1)
@@ -81,7 +87,7 @@ class Node {
 			return
 		}
 
-		else if (alert) {
+		if (alert) {
 			this.state.status = ALERT
 			this.state.caption = this._captions[ALERT]
 			setLed(ledMap[this.state.id], 0, 2)
@@ -146,8 +152,14 @@ class Connection {
 		this.dispatch({ type: SET_CONNECTION_STATE, payload: this.state })
 	}
 
-	activate(status) {
+	setStatus(status) {
 		this.state.status = status
+	}
+
+	activate(status=null) {
+		if (status) {
+			this.state.status = status
+		}
 		this.state.state = MESSAGING
 		this.dispatchState()
 
@@ -155,7 +167,7 @@ class Connection {
 		setTimeout(() => {
 			const idx = self._output[0]
 			const output = self._output[1]
-			output.activate(idx, this.state.status)
+			output.activate(idx, self.state.status)
 		}, CONNECTION_ACTIVATE_NODE_TIMEOUT)
 
 		setTimeout(() => {

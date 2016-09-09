@@ -5,7 +5,7 @@ import { RESTING, MESSAGING } from './../constants/constants'
 export let sceneCommands = [
 
 	intro(false),
-	overlay(false)
+	overlay(false),
 
 
 	// Turn on solar array

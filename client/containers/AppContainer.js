@@ -11,7 +11,7 @@ import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
 import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { dispatchSceneCommands } from './../reducers/sceneReducer'
+import { listenFirebase } from './../reducers/firebase'
 import { sceneCommands } from './../scenes/sceneCommands'
 import { sceneObjects, sceneInit } from './../scenes/sceneObjects'
 
@@ -23,18 +23,22 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    startScenes: function() { 
+    startScenes: function() {
       sceneInit().then(() => {
         R.forEach((obj) => {
           obj.setDispatch(dispatch)
         }, sceneObjects)
 
-        sceneObjects[0].activate(0, 'ALERT')
-        sceneObjects[1].activate(0, 'ALERT')
+        listenFirebase(sceneObjects[0], sceneObjects[1])
+
+        setTimeout(() => {
+          sceneObjects[0].activate()
+          sceneObjects[1].activate()
+        }, 5000)
 
         setTimeout(() => {
           sceneObjects[6].activate(0, 'ALERT')
-        }, 2500)
+        }, 10000)
       })
     }
   }
