@@ -104,6 +104,7 @@ class Node {
 		}
 
 		else if (partialAlert) {
+			this.setSelfStatus(ALERT)
 			this.state.caption = this._captions[PARTIAL_ALERT]
 		}
 
@@ -118,7 +119,7 @@ class Node {
 
 		let self = this
 		setTimeout(() => {
-			self.state.status = NORMAL
+			self.setSelfStatus(NORMAL)
 			self.state.showCaption = false
 			self.state.state = RESTING
 
