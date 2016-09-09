@@ -54,12 +54,12 @@ const requestHandler = (req, res) => {
 const port = new SerialPort(devicePort, { baudRate })
 
 port.on('open', () => {
-  // port.write('112;212;312;412;512;612;', (err) => {
-  //   if (err) {
-  //     return console.log('Error on write: ', err.message)
-  //   }
-  //   console.log('message written')
-  // })
+  port.write('002;102;202;302;402;602;', (err) => {
+    if (err) {
+      return console.log('Error on write: ', err.message)
+    }
+    console.log('server started')
+  })
   console.log('open!')
 })
 
