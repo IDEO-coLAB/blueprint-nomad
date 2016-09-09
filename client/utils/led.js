@@ -3,11 +3,13 @@
 // const url = 'localhost:8000/'
 const url = 'http://localhost:8000/'
 
+// returns a promise
 export const setLed = (node, speed, color) => {
-	const config = { method: 'GET', mode: 'cors' }
-	fetch(url, config)
-	.then(function(response) {
-		debugger
-	})
+	const config = { 
+		method: 'POST', 
+		mode: 'cors',
+		body: `${node}${speed}${color};` // make sure to adda semicolon for particle 
+	}
+	return fetch(url, config)
 }
 

@@ -9,13 +9,29 @@ import NodeIconComponent from './NodeIconComponent'
 let speechBubbleOffset = { x:40, y:-80 }
 let nodeIconOffset = { x:-150, y:40 }
 
-let renderNode = (node, x, y) => {
+let renderSpeechBubble = (node, x, y) => {
+  return <SpeechBubbleComponent x={x} y={y} width="100" height="50" text={node.captionText} visible={node.caption} />
+}
+
+let renderIcon = (node, x, y) => {
   return node.icon
     ? <NodeIconComponent
         x={x}
         y={y}
         src={node.icon} />
     : null
+}
+
+let renderNode = (node, style) => {
+  return  (
+    <g onClick={() => { console.log(node.id)}} >
+      <circle
+        style={style}
+        cx={node.pos.x}
+        cy={node.pos.y}
+        r={node.pos.rad} />
+     </g>
+   )
 }
 
 class NodeComponent extends Component {
@@ -51,15 +67,9 @@ class NodeComponent extends Component {
 
     return (
       <g>
-        { renderNode(this.props, iconX, iconY) }
-        <SpeechBubbleComponent x={bubbleX} y={bubbleY} width="100" height="50" text={this.props.captionText} visible={this.props.caption}/>
-        <g onClick={() => { console.log(this.props.id)}} >
-          <circle
-            style={style}
-            cx={this.props.pos.x}
-            cy={this.props.pos.y}
-            r={this.props.pos.rad} />
-         </g>
+        { renderIcon(this.props, iconX, iconY) }
+        { renderSpeechBubble(this.props, bubbleX, bubbleY) }
+        { renderNode(this.props, style) }
       </g>
     )
   }

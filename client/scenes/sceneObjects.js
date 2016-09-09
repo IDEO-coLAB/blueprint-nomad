@@ -13,16 +13,24 @@ import {
 
 import { setLed } from './../utils/led'
 
-const ledMap = {
+export const sceneInit = () => {
+	R.forEach((n) => {
+		setLed(n, 0, 0)
+	}, R.range(0, 7))
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			resolve()
+		}, 5000)
+	})
+}
+export const ledMap = {
 	solar1: 0,
 	solar2: 1,
 	energyPrediction: 2,
-	energyMeters: 3
+	energyMeters: 3,
 	needPeakerPlant: 4,
-	peakerPlant: 5
+	peakerPlant: 6	
 }
-
-setLed(0, 0, 0)
 
 const SUN_THRESHOLD = 5000
 
@@ -76,7 +84,7 @@ class Node {
 		else if (alert) {
 			this.state.status = ALERT
 			this.state.caption = this._captions[ALERT]
-			setLed(ledMap[this.id], 1, 1)
+			setLed(ledMap[this.state.id], 1, 1)
 		}
 
 		else if (partialAlert) {
@@ -95,7 +103,6 @@ class Node {
 		let self = this
 		setTimeout(() => {
 			self.state.status = NORMAL
-			self.state.caption = this._captions[NORMAL]
 			self.state.showCaption = false
 			self.state.state = RESTING
 
@@ -163,6 +170,7 @@ class Connection {
 // nodes only need outputs set
 
 
+
 const SOLAR_ICON = 'icon_solar_panel'
 const SMART_METER_ICON = 'icon_smart_meters'
 const PEAKER_ICON = 'icon_peaker_plant'
@@ -179,7 +187,6 @@ let energyPredictionCaptions = {}
 energyPredictionCaptions[NORMAL] = 'Prediction: Energy output is high'
 energyPredictionCaptions[PARTIAL_ALERT] = 'Prediciton: Energy output to drop by 50%'
 energyPredictionCaptions[ALERT] = 'Prediciton: Energy output to drop by 100%'
-
 
 let energyMetersCaptions = {}
 energyMetersCaptions[NORMAL] = 'Meters: Load is low'
@@ -269,41 +276,3 @@ export const sceneObjects = [
 	needPeakerToPeaker,
 	peakerPlant
 ]
-
-
-
-
-
-
-// nodes can have multiple inputs and multiple outputs
-// connections can only have 1 input and 1 output
-// for simplicity, we always use array to store inputs and outputs, even
-// if there's only 1
-// export const initialScenes = {
-// 	showOverlay: true,
-//  showIntro: true,
-// 	activeScene: 0,
-// 	scenes: [
-// 		{
-// 			// an object is either a node or a connection
-// 			objects: [
-// 				{
-// 					id: 0,
-// 					type: SCENE_NODE,
-// 					state: RESTING,
-// 					inputs: [],
-// 					outputs: [1],
-// 					pos: { x: 100, y: 200, rad: 30, strokeWidth: 26 },
-//					caption: 'this is a speech bubble'
-// 				},
-// 				{
-// 					id: 1,
-// 					type: SCENE_CONNECTION,
-// 					state: RESTING,
-// 					inputs: [0],
-// 					outputs: [2]
-// 				},
-// 			]
-// 		}
-// 	]
-// }

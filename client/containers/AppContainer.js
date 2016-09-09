@@ -13,7 +13,7 @@ import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
 import { sceneCommands } from './../scenes/sceneCommands'
-import { sceneObjects } from './../scenes/sceneObjects'
+import { sceneObjects, sceneInit } from './../scenes/sceneObjects'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -23,17 +23,19 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    startScenes: function() {
-      R.forEach((obj) => {
-        obj.setDispatch(dispatch)
-      }, sceneObjects)
+    startScenes: function() { 
+      sceneInit().then(() => {
+        R.forEach((obj) => {
+          obj.setDispatch(dispatch)
+        }, sceneObjects)
 
-      sceneObjects[0].activate(0, 'ALERT')
-      sceneObjects[1].activate(0, 'ALERT')
+        sceneObjects[0].activate(0, 'ALERT')
+        sceneObjects[1].activate(0, 'ALERT')
 
-      setTimeout(() => {
-        sceneObjects[6].activate(0, 'ALERT')
-      }, 2500)
+        setTimeout(() => {
+          sceneObjects[6].activate(0, 'ALERT')
+        }, 2500)
+      })
     }
   }
 }
