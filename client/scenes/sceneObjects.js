@@ -84,7 +84,7 @@ class Node {
 		else if (alert) {
 			this.state.status = ALERT
 			this.state.caption = this._captions[ALERT]
-			setLed(ledMap[this.state.id], 1, 1)
+			setLed(ledMap[this.state.id], 0, 2)
 		}
 
 		else if (partialAlert) {
