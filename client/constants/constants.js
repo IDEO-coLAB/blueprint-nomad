@@ -9,3 +9,8 @@ export const SCENE_CONNECTION = 'SCENE_CONNECTION'
 export const DOM_EVENTS = {
   CLICK: 'click'
 }
+
+export const ALERT = 'ALERT'
+export const NORMAL = 'NORMAL'
+export const PARTIAL_ALERT = 'PARTIAL_ALERT'
+
