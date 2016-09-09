@@ -37,12 +37,6 @@ function mapDispatchToProps(dispatch) {
       listenFirebase(sceneObjects[0], sceneObjects[1])
 
       const initSolarPanels = () => {
-        const activationState0 = solar0._activationState[0]
-        const activationState1 = solar1._activationState[0]
-
-        if (R.isNil(activationState0)) solar0.setInputStatus(0, 'NORMAL')
-        if (R.isNil(activationState1)) solar1.setInputStatus(0, 'NORMAL')
-
         solar0.activate()
         solar1.activate()
       }
@@ -54,7 +48,7 @@ function mapDispatchToProps(dispatch) {
         }, 5000)
 
         setTimeout(() => {
-          sceneObjects[6].activate(0, 'ALERT')
+          sceneObjects[6].activate(0, 'NORMAL')
         }, 10000)
       }
 
