@@ -4,13 +4,16 @@ import R from 'ramda'
 
 import NodeComponent from './../components/NodeComponent'
 import IntroComponent from './../components/IntroComponent'
+import SfMapComponent from './../components/SfMapComponent'
 import SceneCaptionComponent from './../components/SceneCaptionComponent'
 import OverlayComponent from './../components/OverlayComponent'
 import NodeConnectionComponent from './../components/NodeConnectionComponent'
 import SpeechBubbleComponent from './../components/SpeechBubbleComponent'
+import LiveSensorsContainer from './LiveSensorsContainer'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { dispatchSceneCommands } from './../reducers/sceneReducer'
 import { sceneCommands } from './../scenes/sceneCommands'
+import { sceneObjects, sceneInit } from './../scenes/sceneObjects'
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -20,8 +23,19 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    startScenes: function() {
-      dispatch(dispatchSceneCommands(sceneCommands))
+    startScenes: function() { 
+      sceneInit().then(() => {
+        R.forEach((obj) => {
+          obj.setDispatch(dispatch)
+        }, sceneObjects)
+
+        sceneObjects[0].activate(0, 'ALERT')
+        sceneObjects[1].activate(0, 'ALERT')
+
+        setTimeout(() => {
+          sceneObjects[6].activate(0, 'ALERT')
+        }, 2500)
+      })
     }
   }
 }
@@ -44,10 +58,9 @@ class App extends Component {
 
     return (
       <div>
-        <IntroComponent visible={this.props.scenes.showIntro} activeScene={activeSceneId} />
-        <OverlayComponent visible={this.props.scenes.showOverlay} />
+        <SfMapComponent />
         <SceneCaptionComponent visible={activeSceneObj.showSceneCaption} text={activeSceneObj.sceneCaption} />
-        <svg width="1920" height="1080" style={{background: '#efefef'}}>
+        <svg width="1620" height="1080" >
           { renderedNodes }
         </svg>
       </div>
@@ -56,8 +69,19 @@ class App extends Component {
 }
 
 // helpers
-let connectionInput = connection => { return R.head(connection.inputs) }
-let connectionOutput = connection => { return R.head(connection.outputs) }
+let connectionInput = connectionObj => {
+
+  const obj = R.find((obj) => {
+    return obj.state.id === connectionObj.id
+  })(sceneObjects)
+  return obj._input.state.id
+}
+let connectionOutput = connectionObj => {
+  const obj = R.find((obj) => {
+    return obj.state.id === connectionObj.id
+  })(sceneObjects)
+  return obj._output[1].state.id
+}
 
 // curried
 let _getObjectWithId = R.curry((objects, id) => { return R.find(R.propEq('id', id), objects) })
@@ -65,14 +89,25 @@ let isNode = R.propEq('type', SCENE_NODE)
 let isConnection = R.propEq('type', SCENE_CONNECTION)
 
 // rendering helpers
-let renderNode = node => { return <NodeComponent x={node.pos.x} y={node.pos.y} state={node.state} id={node.id} captionText={node.captionText} caption={node.showCaption} /> }
+let renderNode = node => {
+  return <NodeComponent
+    icon={node.icon}
+    inputs={node.inputCount()}
+    pos={node.pos}
+    state={node.state}
+    status={node.status}
+    id={node.id}
+    captionText={node.caption}
+    caption={node.showCaption}
+    key={node.id} />
+}
 
 // curried with objects first
 let _renderConnection = R.curry((objects, connection) => {
   let getFromId = _getObjectWithId(objects)
   let cin = getFromId(connectionInput(connection))
   let cout = getFromId(connectionOutput(connection))
-  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} state={connection.state} />
+  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} state={connection.state} key={connection.id} />
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

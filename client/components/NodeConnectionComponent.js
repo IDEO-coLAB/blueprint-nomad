@@ -24,12 +24,12 @@ class NodeConnection extends Component {
 
   render() {
     let style = (R.equals(this.props.state, MESSAGING))? this.keyframe.keyframeStyle : {display: 'none'}
-    
+
     return (
       <g>
-        <line x1={this.props.x1} y1={this.props.y1} x2={this.props.x2} y2={this.props.y2} stroke="#98A2A3" strokeWidth="3"/>
+        <line x1={this.props.x1} y1={this.props.y1} x2={this.props.x2} y2={this.props.y2} strokeDasharray="9,4" stroke="#FFCE08" strokeWidth="3"/>
         <g style={style}>
-          <circle cx="0" cy="0" r="8" fill="#28616B" />
+          <circle cx="0" cy="0" r="8" fill="#FFCE08" />
         </g>
       </g>
     )
