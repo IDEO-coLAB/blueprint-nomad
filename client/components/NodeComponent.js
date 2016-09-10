@@ -44,7 +44,7 @@ class NodeComponent extends Component {
     let styleMessaging = {
       fill: "#0C0F1E",
       fillOpacity: "1.0",
-      stroke: isComposite ? compositeStroke : atomicStroke,
+      stroke: atomicStroke,
       strokeWidth: this.props.pos.strokeWidth,
       transition: 'fill 0.5s'
     }
@@ -52,7 +52,7 @@ class NodeComponent extends Component {
     let styleResting = {
       fill: "#0C0F1E",
       fillOpacity: "1.0",
-      stroke: isComposite ? compositeStroke : atomicStroke,
+      stroke: atomicStroke,
       strokeWidth: this.props.pos.strokeWidth,
       transition: 'fill 1.0s'
     }

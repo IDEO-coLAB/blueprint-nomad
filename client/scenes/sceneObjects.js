@@ -33,7 +33,7 @@ export const setupObjects = (replayFn) => {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			resolve()
-		}, 5000)
+		}, 2000)
 	})
 }
 
@@ -105,7 +105,8 @@ class Node {
 			this._activationState[idx] = status
 		}
 
-		let waiting = R.any(R.isNil, this._activationState)
+		let waiting = (R.length(this._activationState) > 1) && R.any(R.isNil, this._activationState)
+		// let waiting = R.any(R.isNil, this._activationState)
 		let partialAlert = (R.length(this._activationState) > 1)
 			&& R.not(waiting)
 			&& R.any(R.equals(ALERT))(this._activationState)
@@ -113,6 +114,18 @@ class Node {
 		let allNormal = R.all(R.equals(NORMAL), this._activationState)
 
 		if (waiting) {
+			// this.state.state = MESSAGING
+			this.state.showCaption = true
+			this.state.caption = "Message received"
+			this.dispatchState()
+
+			let self = this
+			setTimeout(() => {
+				self.state.showCaption = false
+				// self.state.state = RESTING
+				self.dispatchState()
+
+			}, NODE_DEACTIVATE_TIMEOUT)
 			return
 		}
 
@@ -183,11 +196,11 @@ class InteractiveNode extends Node {
 		this.state.status = status
 
 		if (status == ALERT) {
-			setLed(ledMap[this.state.id], 1, 2)
+			setLed(ledMap[this.state.id], 1, 4)
 		}
 
 		if (status == NORMAL) {
-			setLed(ledMap[this.state.id], 1, 1)
+			setLed(ledMap[this.state.id], 1, 3)
 		}
 
 		this.state.caption = this._captions[status]

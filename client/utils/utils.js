@@ -17,7 +17,43 @@ const generateTranslationAnimation = (x1, y1, x2, y2, time) => {
     animationDuration: animationDuration,
     animationEasing: animationEasing,
     animationIterationCount: 'infinite'
+  }
 
+  return { keyframeRule, keyframeStyle}
+}
+
+const generateBlinkAnimation = () => {
+  const animationName = `kf-animation-blink-${Math.round(Math.random() * 1e6)}`
+  const animationEasing = 'ease-in-out'
+
+  const keyframeRule = `@keyframes ${animationName} {
+    0% {
+      opacity: 1
+    }
+    30% {
+      opacity: 1
+    }
+    40% {
+      opacity: .3
+    }
+    50% {
+      opacity: 0
+    }
+    60% {
+      opacity: .3
+    }
+    70% {
+      opacity: 1
+    }
+    100% {
+      opacity: 1
+    }
+  }`
+
+  const keyframeStyle = {
+    animation: `${animationName} 0.4s steps(10, start)`,
+    animationEasing: animationEasing,
+    animationIterationCount: 'infinite'
   }
 
   return { keyframeRule, keyframeStyle}
@@ -27,4 +63,4 @@ const insertAnimations = (keyframeRule) => {
   document.styleSheets[0].insertRule(keyframeRule, document.styleSheets[0].rules.length);
 }
 
-export { generateTranslationAnimation, insertAnimations}
+export { generateTranslationAnimation, generateBlinkAnimation, insertAnimations}

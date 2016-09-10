@@ -45,11 +45,11 @@ function mapDispatchToProps(dispatch) {
         console.log('scene about to init')
         setTimeout(() => {
           initSolarPanels()
-        }, 5000)
+        }, 1000)
 
         setTimeout(() => {
           sceneObjects[6].activate(0, 'NORMAL')
-        }, 10000)
+        }, 12000)
       }
 
       setupObjects(initScene).then(initScene)
@@ -130,7 +130,7 @@ let _renderConnection = R.curry((objects, connection) => {
   let getFromId = _getObjectWithId(objects)
   let cin = getFromId(connectionInput(connection))
   let cout = getFromId(connectionOutput(connection))
-  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} state={connection.state} key={connection.id} />
+  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} status={connection.status} state={connection.state} key={connection.id} />
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
