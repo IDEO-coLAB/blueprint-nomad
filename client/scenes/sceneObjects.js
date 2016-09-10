@@ -16,6 +16,10 @@ import { setLed } from './../utils/led'
 //
 const LAST_NODE_ID = 'peakerPlant'
 
+const isNotSolar = (id) => {
+	return !R.contains(id, ['solar1', 'solar2'])
+}
+
 // Func to replay the scene
 let replay = null
 
@@ -29,9 +33,10 @@ export const setupObjects = (replayFn) => {
 	return new Promise((resolve, reject) => {
 		setTimeout(() => {
 			resolve()
-		}, 5000)
+		}, 2000)
 	})
 }
+
 export const ledMap = {
 	solar1: 1,
 	solar2: 0,
@@ -84,12 +89,14 @@ class Node {
 		this.state.status = status
 		if (status == ALERT) {
 			setLed(ledMap[this.state.id], 1, 2)
+			this.state.caption = this._captions[ALERT]
 		}
 
 		if (status == NORMAL) {
 			// node always turns this off directly when state goes
 			// from MESSAGING to RESTING (state not status)
 			// setLed(ledMap[this.state.id], 0, 1)
+			this.state.caption = this._captions[NORMAL]
 		}
 	}
 
@@ -98,7 +105,8 @@ class Node {
 			this._activationState[idx] = status
 		}
 
-		let waiting = R.any(R.isNil, this._activationState)
+		let waiting = (R.length(this._activationState) > 1) && R.any(R.isNil, this._activationState)
+		// let waiting = R.any(R.isNil, this._activationState)
 		let partialAlert = (R.length(this._activationState) > 1)
 			&& R.not(waiting)
 			&& R.any(R.equals(ALERT))(this._activationState)
@@ -106,6 +114,18 @@ class Node {
 		let allNormal = R.all(R.equals(NORMAL), this._activationState)
 
 		if (waiting) {
+			// this.state.state = MESSAGING
+			this.state.showCaption = true
+			this.state.caption = "Message received"
+			this.dispatchState()
+
+			let self = this
+			setTimeout(() => {
+				self.state.showCaption = false
+				// self.state.state = RESTING
+				self.dispatchState()
+
+			}, NODE_DEACTIVATE_TIMEOUT)
 			return
 		}
 
@@ -122,6 +142,7 @@ class Node {
 		else if (allNormal) {
 			this.state.caption = this._captions[NORMAL]
 			setLed(ledMap[this.state.id], 1, 1)
+			this.setSelfStatus(NORMAL)
 		}
 
 		this.state.showCaption = true
@@ -141,7 +162,9 @@ class Node {
 			self._activationState = R.repeat(null, activationStateLength)
 			self.dispatchState()
 
-			setLed(ledMap[this.state.id], 1, 0)
+			if (isNotSolar(this.state.id)) {
+				setLed(ledMap[this.state.id], 1, 0)
+			}
 
 			// If the last node is shutting down, replay the scene
 			if ((self.state.id === LAST_NODE_ID) && replay) {
@@ -154,6 +177,40 @@ class Node {
 		// above timeout might reset self.state.status before
 		// this timeout fires
 		let _cachedSelfStatus = self.state.status
+		setTimeout(() => {
+			R.forEach((connection) => {
+				connection.activate(_cachedSelfStatus)
+			}, self._outputs)
+		}, NODE_ACTIVATE_CONNECTION_TIMEOUT)
+	}
+}
+
+class InteractiveNode extends Node {
+	constructor(id, captions, icon) {
+		super(id, captions, icon)
+		this.state.state = MESSAGING
+		this.state.showCaption = true
+	}
+
+	setSelfStatus(status) {
+		this.state.status = status
+
+		if (status == ALERT) {
+			setLed(ledMap[this.state.id], 1, 4)
+		}
+
+		if (status == NORMAL) {
+			setLed(ledMap[this.state.id], 1, 3)
+		}
+
+		this.state.caption = this._captions[status]
+		this.dispatchState()
+	}
+
+	activate(idx=null, status=null) {
+		let self = this
+		let _cachedSelfStatus = self.state.status
+
 		setTimeout(() => {
 			R.forEach((connection) => {
 				connection.activate(_cachedSelfStatus)
@@ -245,10 +302,10 @@ peakerCaptions[NORMAL] = 'Peaker: I am off',
 peakerCaptions[ALERT] = 'Peaker: I am turning on!'
 
 
-const solar1 = new Node('solar1', solar1captions, SOLAR_ICON)
+const solar1 = new InteractiveNode('solar1', solar1captions, SOLAR_ICON)
 const solar1ToEnergyPrediction = new Connection('solar1ToEnergyPrediction')
 
-const solar2 = new Node('solar2', solar2captions, SOLAR_ICON)
+const solar2 = new InteractiveNode('solar2', solar2captions, SOLAR_ICON)
 const solar2ToEnergyPrediction = new Connection('solar2ToEnergyPrediction')
 
 const energyPrediction = new Node('energyPrediction', energyPredictionCaptions)

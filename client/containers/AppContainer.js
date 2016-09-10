@@ -37,12 +37,6 @@ function mapDispatchToProps(dispatch) {
       listenFirebase(sceneObjects[0], sceneObjects[1])
 
       const initSolarPanels = () => {
-        const activationState0 = solar0._activationState[0]
-        const activationState1 = solar1._activationState[0]
-
-        if (R.isNil(activationState0)) solar0.setInputStatus(0, 'NORMAL')
-        if (R.isNil(activationState1)) solar1.setInputStatus(0, 'NORMAL')
-
         solar0.activate()
         solar1.activate()
       }
@@ -51,11 +45,11 @@ function mapDispatchToProps(dispatch) {
         console.log('scene about to init')
         setTimeout(() => {
           initSolarPanels()
-        }, 5000)
+        }, 1000)
 
         setTimeout(() => {
-          sceneObjects[6].activate(0, 'ALERT')
-        }, 10000)
+          sceneObjects[6].activate(0, 'NORMAL')
+        }, 12000)
       }
 
       setupObjects(initScene).then(initScene)
@@ -136,7 +130,7 @@ let _renderConnection = R.curry((objects, connection) => {
   let getFromId = _getObjectWithId(objects)
   let cin = getFromId(connectionInput(connection))
   let cout = getFromId(connectionOutput(connection))
-  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} state={connection.state} key={connection.id} />
+  return <NodeConnectionComponent x1={cin.pos.x} y1={cin.pos.y} x2={cout.pos.x} y2={cout.pos.y} status={connection.status} state={connection.state} key={connection.id} />
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
