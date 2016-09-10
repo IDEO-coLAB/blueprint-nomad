@@ -80,6 +80,7 @@
     "particle-api-js": "6.0.4",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "perlin-noise": "0.0.1",
     "q": "^1.4.1",
     "ramda": "^0.21.0",
     "react": "0.14.6",
