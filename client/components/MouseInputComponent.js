@@ -16,7 +16,14 @@ class MouseInputComponent extends Component {
     let self = this
 
     return (
-    	<div style={style} onClick={event => self.props.mouseClicked(event)}></div>
+    	<div 
+        style={style} 
+        onClick={event => self.props.leftMouseClicked()}
+        onContextMenu={event => {
+          event.preventDefault() 
+          self.props.rightMouseClicked()
+        }}>
+      </div>
     )
   }
 }

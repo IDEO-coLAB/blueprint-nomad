@@ -27,14 +27,14 @@ class App extends Component {
 		super()
 		this.currentScene = 0
 		this.scenes = [
-			<TitleScene />,
-			<WhatisNomadScene />,
-			<ImagineScene />,
-			<Imagine2Scene />,
-			<Imagine3Scene />,
-			<VoiceScene />,
-			<Voice2Scene />,
-			<InteractiveMapScene />
+			{ obj: <TitleScene />, key: 'TitleScene' },
+			{ obj: <WhatisNomadScene />, key: 'WhatisNomadScene' },
+			{ obj: <ImagineScene />, key: 'ImagineScene' },
+			{ obj: <Imagine2Scene />, key: 'Imagine2Scene' },
+			{ obj: <Imagine3Scene />, key: 'Imagine3Scene' },
+			{ obj: <VoiceScene />, key: 'VoiceScene' },
+			{ obj: <Voice2Scene />, key: 'Voice2Scene' },
+			// { obj: <InteractiveMapScene />, key: 'InteractiveMapScene' },
 		]
 	}
 
@@ -52,11 +52,38 @@ class App extends Component {
   	let self = this
     return (
     	<div>
-	    	<MouseInputComponent mouseClicked={(event) => { self.nextScene() }} />
-	      { this.scenes[this.currentScene] }
+	    	<MouseInputComponent 
+	    		leftMouseClicked={() => { self.nextScene() }}
+	    		rightMouseClicked={() => { self.previousScene() }} />
+
+	    	// reverse because browser renders last in list on top
+	    	{ R.reverse(renderScenes(this.currentScene, this.scenes)) }
       </div>
     )
   }
+}
+
+let renderScenes = (current, scenes) => {
+	let map = R.addIndex(R.map)
+	return map((scene, i)  => {
+		let hideStyle = {
+			opacity: 0,
+			transition: 'opacity 0.5s'
+		}
+
+		let showStyle = {
+			opacity: 1
+		}
+
+		let style = showStyle
+		if (i < current) { style = hideStyle }
+
+		return (
+			<div style={style} key={scene.key}>
+				{ scene.obj }
+			</div>
+		)
+	}, scenes)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

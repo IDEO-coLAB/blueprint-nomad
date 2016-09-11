@@ -8,7 +8,6 @@ class backgroundImageComponent extends Component {
       left: 0,
       top: 0,
       zIndex: -1,
-      opacity: 1
     }
 
     return (
