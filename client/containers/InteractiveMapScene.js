@@ -19,6 +19,13 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    initScene: () => {
+      // give each node and connection the ability to dispatch
+      R.forEach((obj) => {
+        obj.setDispatch(dispatch)
+      }, sceneObjects)
+    },
+
     helpers: {
       // these are curried, configure with sceneObjects
       connectionInputId: connectionInputId(sceneObjects),
@@ -28,18 +35,25 @@ function mapDispatchToProps(dispatch) {
 }
 
 class InteractiveMapScene extends Component {
-  componentDidMount() {
-    this.startScene()
+  componentWillMount() {
+    this.props.initScene()
   }
+  
+  render() {
+    if (this.props.active) { startScene() } // note: wrapped in R.once so only started once
+    return (
+      <div>
+        <SfMapComponent />
+        <NodesRenderComponent sceneObjects={sceneObjects} sceneState={this.props.sceneState} helpers={this.props.helpers} />
+      </div>
+    )
+  }
+}
 
-  startScene() {
+// wrapped in R.once!!!
+const startScene = R.once(() => {
     const solar0 = sceneObjects[0]
     const solar1 = sceneObjects[1]
-
-    // give each node and connection the ability to dispatch
-    R.forEach((obj) => {
-      obj.setDispatch(dispatch)
-    }, sceneObjects)
 
     // set the solar panels to listen to firebase events
     listenFirebase(sceneObjects[0], sceneObjects[1])
@@ -61,16 +75,6 @@ class InteractiveMapScene extends Component {
     }
 
     setupObjects(initScene).then(initScene)
-  }
-
-  render() {
-    return (
-      <div>
-        <SfMapComponent />
-        <NodesRenderComponent sceneObjects={sceneObjects} sceneState={this.props.sceneState} helpers={this.props.helpers} />
-      </div>
-    )
-  }
-}
+  })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InteractiveMapScene)

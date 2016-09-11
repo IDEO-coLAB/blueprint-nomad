@@ -50,13 +50,12 @@ class App extends Component {
 
   render() {
   	let self = this
+  	// reverse renderScenes returned list because browser renders last in list on top
     return (
     	<div>
 	    	<MouseInputComponent 
 	    		leftMouseClicked={() => { self.nextScene() }}
 	    		rightMouseClicked={() => { self.previousScene() }} />
-
-	    	// reverse because browser renders last in list on top
 	    	{ R.reverse(renderScenes(this.currentScene, this.scenes)) }
       </div>
     )
