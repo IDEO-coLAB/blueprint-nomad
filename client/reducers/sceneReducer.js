@@ -10,7 +10,7 @@ export let sceneReducer = function(appState=initialScenes, action) {
 	switch (action.type) {
 		case SET_NODE_STATE:
 		case SET_CONNECTION_STATE: 
-			let cloned = updateNodeState(appState, action.payload)
+			let cloned = updateNodeState(appState, action.sceneIdx, action.payload)
 			return cloned
 		default:
 			return appState
@@ -52,9 +52,9 @@ let getObject = (objects, sceneId, id) => {
 }
 
 // returns a copy of appstate, doesn't mutate appstate
-let updateNodeState = (appState, nodeState) => {
+let updateNodeState = (appState, sceneIdx, nodeState) => {
 	let cloned = R.clone(appState)
-	let nodes = cloned.scenes[cloned.activeScene].objects
+	let nodes = cloned.scenes[sceneIdx].objects
 	let nodeId = nodeState.id
 
 	// remove node from list
@@ -64,7 +64,7 @@ let updateNodeState = (appState, nodeState) => {
 
 	// add it back
 	let added = R.concat(filtered, nodeState)
-	cloned.scenes[cloned.activeScene].objects = added
+	cloned.scenes[sceneIdx].objects = added
 	return cloned
 }
 

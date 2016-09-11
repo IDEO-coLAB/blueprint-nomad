@@ -40,11 +40,20 @@ class InteractiveMapScene extends Component {
   }
 
   render() {
+    let style = {
+      position: 'absolute',
+      left: 0,
+      top: 0
+    }
+
     if (this.props.active) { startScene() } // note: wrapped in R.once so only started once
     return (
       <div>
         <SfMapComponent />
-        <NodesRenderComponent sceneObjects={sceneObjects} sceneState={this.props.sceneState} helpers={this.props.helpers} />
+        <NodesRenderComponent 
+          sceneDataObjects={this.props.sceneState.scenes[1].objects} 
+          helpers={this.props.helpers} 
+        />
       </div>
     )
   }

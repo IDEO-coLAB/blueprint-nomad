@@ -14,11 +14,14 @@ import {
 import { setLed } from './../utils/led'
 
 //
-const LAST_NODE_ID = 'peakerPlant'
+const LAST_NODE_ID = 'energyPrediction'
 
 const isNotSolar = (id) => {
 	return !R.contains(id, ['solar1', 'solar2'])
 }
+
+// used by objects to know which redux state tree to modify
+let sceneIdx = 0
 
 // Func to replay the scene
 let replay = null
@@ -78,7 +81,7 @@ class Node {
 	}
 
 	dispatchState() {
-		this.dispatch({ type: SET_NODE_STATE, payload: this.state })
+		this.dispatch({ type: SET_NODE_STATE, sceneIdx: sceneIdx, payload: this.state })
 	}
 
 	setInputStatus(idx, status) {
@@ -239,7 +242,7 @@ class Connection {
 	}
 
 	dispatchState() {
-		this.dispatch({ type: SET_CONNECTION_STATE, payload: this.state })
+		this.dispatch({ type: SET_CONNECTION_STATE, sceneIdx: sceneIdx, payload: this.state })
 	}
 
 	setStatus(status) {
@@ -309,15 +312,6 @@ const solar2 = new InteractiveNode('solar2', solar2captions, SOLAR_ICON)
 const solar2ToEnergyPrediction = new Connection('solar2ToEnergyPrediction')
 
 const energyPrediction = new Node('energyPrediction', energyPredictionCaptions)
-const energyPredictionToNeedPeakerPlant = new Connection('energyPredictionToNeedPeakerPlant')
-
-const energyMeters = new Node('energyMeters', energyMetersCaptions, SMART_METER_ICON)
-const energyMetersToNeedPeakerPlant = new Connection('energyMetersToNeedPeakerPlant')
-
-const needPeakerPlant = new Node('needPeakerPlant', needPeakerPlantCaptions)
-
-const needPeakerToPeaker = new Connection('needPeakerToPeaker')
-const peakerPlant = new Node('peakerPlant', peakerCaptions, PEAKER_ICON)
 
 solar1.setInputSize(1)
 solar1._outputs.push(solar1ToEnergyPrediction)
@@ -336,43 +330,13 @@ solar2ToEnergyPrediction._input = solar2
 solar2ToEnergyPrediction._output = [1, energyPrediction]
 
 energyPrediction.setInputSize(2)
-energyPrediction._outputs.push(energyPredictionToNeedPeakerPlant)
 energyPrediction.state.pos.x = 1200
 energyPrediction.state.pos.y = 159
-
-energyPredictionToNeedPeakerPlant._input = energyPrediction
-energyPredictionToNeedPeakerPlant._output = [0, needPeakerPlant]
-
-energyMeters.setInputSize(1)
-energyMeters._outputs.push(energyMetersToNeedPeakerPlant)
-energyMeters.state.pos.x = 413
-energyMeters.state.pos.y = 749
-
-energyMetersToNeedPeakerPlant._input = energyMeters
-energyMetersToNeedPeakerPlant._output = [1, needPeakerPlant]
-
-needPeakerPlant.setInputSize(2)
-needPeakerPlant._outputs.push(needPeakerToPeaker)
-needPeakerPlant.state.pos.x = 896
-needPeakerPlant.state.pos.y = 477
-
-needPeakerToPeaker._input = needPeakerPlant
-needPeakerToPeaker._output = [0, peakerPlant]
-
-peakerPlant.setInputSize(1)
-peakerPlant.state.pos.x = 945
-peakerPlant.state.pos.y = 837
 
 export const sceneObjects = [
 	solar1,
 	solar2,
 	solar1ToEnergyPrediction,
 	solar2ToEnergyPrediction,
-	energyPrediction,
-	energyPredictionToNeedPeakerPlant,
-	energyMeters,
-	energyMetersToNeedPeakerPlant,
-	needPeakerPlant,
-	needPeakerToPeaker,
-	peakerPlant
+	energyPrediction
 ]

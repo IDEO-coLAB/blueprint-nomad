@@ -10,7 +10,9 @@ import Imagine2Scene from './../containers/Imagine2Scene'
 import Imagine3Scene from './../containers/Imagine3Scene'
 import VoiceScene from './../containers/VoiceScene'
 import Voice2Scene from './../containers/Voice2Scene'
-import InteractiveMapScene from './../containers/InteractiveMapScene'
+import InteractiveThreeNodeMapScene from './../containers/InteractiveThreeNodeMapScene'
+import InteractiveFullMapScene from './../containers/InteractiveFullMapScene'
+
 
 function mapStateToProps(state, ownProps) {
   return {
@@ -28,13 +30,14 @@ class App extends Component {
 		this.currentScene = 0
 		this.scenes = [
 			{ obj: TitleScene, key: 'TitleScene' },
-			{ obj: WhatisNomadScene, key: 'WhatisNomadScene' },
-			{ obj: ImagineScene, key: 'ImagineScene' },
-			{ obj: Imagine2Scene, key: 'Imagine2Scene' },
-			{ obj: Imagine3Scene, key: 'Imagine3Scene' },
-			{ obj: VoiceScene, key: 'VoiceScene' },
-			{ obj: Voice2Scene, key: 'Voice2Scene' },
-			{ obj: InteractiveMapScene, key: 'InteractiveMapScene' },
+			// { obj: WhatisNomadScene, key: 'WhatisNomadScene' },
+			// { obj: ImagineScene, key: 'ImagineScene' },
+			// { obj: Imagine2Scene, key: 'Imagine2Scene' },
+			// { obj: Imagine3Scene, key: 'Imagine3Scene' },
+			// { obj: VoiceScene, key: 'VoiceScene' },
+			// { obj: Voice2Scene, key: 'Voice2Scene' },
+			{ obj: InteractiveThreeNodeMapScene, key: 'InteractiveThreeNodeMapScene' },
+			{ obj: InteractiveFullMapScene, key: 'InteractiveFullMapScene' }
 		]
 	}
 

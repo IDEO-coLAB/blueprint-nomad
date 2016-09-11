@@ -10,9 +10,7 @@ import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants
 
 class NodesRenderComponent extends Component {
   render() {
-    let activeSceneId = this.props.sceneState.activeScene
-    let activeSceneObj = this.props.sceneState.scenes[activeSceneId]
-    let allObjects = this.props.sceneState.scenes[activeSceneId].objects
+    let allObjects = this.props.sceneDataObjects
     let renderConnection = _renderConnection(allObjects, this.props.helpers)
 
     let renderedNodes = [].concat(
@@ -53,9 +51,6 @@ let renderNode = node => {
 
 // curried with objects first
 let _renderConnection = R.curry((objects, helpers, connection) => {
-  if (connection.id === undefined) {
-    debugger
-  }
   let getFromId = _getObjectWithId(objects)
   let cin = getFromId(helpers.connectionInputId(connection.id))
   let cout = getFromId(helpers.connectionOutputId(connection.id))

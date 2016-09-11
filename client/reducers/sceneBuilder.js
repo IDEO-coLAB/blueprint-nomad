@@ -1,34 +1,18 @@
 import R from 'ramda'
 
-import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
-import { sceneObjects } from './../scenes/sceneObjects'
-
-// helpers for makeScene
-// does the line have given nodeId as an output
-let hasNodeAsInput = (sceneLine, nodeId)  => {
-	return R.contains(nodeId, sceneLine[0])
-}
-
-let pluckInputs = R.pluck(0)
+import { sceneObjects as fullSceneObjects } from './../scenes/fullScene'
+import { sceneObjects as threeNodeSceneObjects } from './../scenes/threeNodeScene'
 
 let makeScene = sceneIn => {
-	let idx = 0
 	let objectList = R.map((obj) => {
 		return obj.state
 	}, sceneIn)
 
-	return {
-		objects: objectList,
-		showSceneCaption: false,
-		sceneCaption: ''
-	}
+	return { objects: objectList }
 }
 
 export let initialScenes = {
-	showOverlay: true,
-	showIntro: true,
-	activeScene: 0,
-	scenes: [ makeScene(sceneObjects) ]
+	scenes: [ makeScene(threeNodeSceneObjects), makeScene(fullSceneObjects) ]
 }
 
 

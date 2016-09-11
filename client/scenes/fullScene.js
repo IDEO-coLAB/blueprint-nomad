@@ -20,6 +20,9 @@ const isNotSolar = (id) => {
 	return !R.contains(id, ['solar1', 'solar2'])
 }
 
+// used by objects to know which redux state tree to modify
+let sceneIdx = 1
+
 // Func to replay the scene
 let replay = null
 
@@ -78,7 +81,7 @@ class Node {
 	}
 
 	dispatchState() {
-		this.dispatch({ type: SET_NODE_STATE, payload: this.state })
+		this.dispatch({ type: SET_NODE_STATE, sceneIdx: sceneIdx, payload: this.state })
 	}
 
 	setInputStatus(idx, status) {
@@ -239,7 +242,7 @@ class Connection {
 	}
 
 	dispatchState() {
-		this.dispatch({ type: SET_CONNECTION_STATE, payload: this.state })
+		this.dispatch({ type: SET_CONNECTION_STATE, sceneIdx: sceneIdx, payload: this.state })
 	}
 
 	setStatus(status) {
