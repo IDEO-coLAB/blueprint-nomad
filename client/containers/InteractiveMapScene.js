@@ -3,15 +3,17 @@ import { connect } from 'react-redux'
 import R from 'ramda'
 
 import NodesRenderComponent from './../components/NodesRenderComponent'
+import SfMapComponent from './../components/SfMapComponent'
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { listenFirebase } from './../reducers/firebase'
 import { sceneObjects, setupObjects } from './../scenes/sceneObjects'
+import { connectionInputId, connectionOutputId } from './../scenes/sceneHelpers'
 
 
 function mapStateToProps(state, ownProps) {
   return {
-    scenes: state.scenes
+    sceneState: state.scenes
   }
 }
 
@@ -47,6 +49,12 @@ function mapDispatchToProps(dispatch) {
       }
 
       setupObjects(initScene).then(initScene)
+    },
+
+    helpers: {
+      // these are curried, configure with sceneObjects
+      connectionInputId: connectionInputId(sceneObjects),
+      connectionOutputId: connectionOutputId(sceneObjects)
     }
   }
 }
@@ -58,7 +66,10 @@ class InteractiveMapScene extends Component {
 
   render() {
     return (
-      <NodesRenderComponent scenes={this.props.scenes} />
+      <div>
+        <SfMapComponent />
+        <NodesRenderComponent sceneObjects={sceneObjects} sceneState={this.props.sceneState} helpers={this.props.helpers} />
+      </div>
     )
   }
 }
