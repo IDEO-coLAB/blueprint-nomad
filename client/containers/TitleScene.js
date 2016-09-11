@@ -9,7 +9,7 @@ import BackgroundIMageComponent from './../components/BackgroundIMageComponent'
 class Scene extends Component {
   render() {
     return (
-      <BackgroundIMageComponent src="/assets/images/scenes/title.png" />
+      <BackgroundIMageComponent style={{zIndex:100}} src="/assets/images/scenes/title.png" />
     )
   }
 }

@@ -27,14 +27,14 @@ class App extends Component {
 		super()
 		this.currentScene = 0
 		this.scenes = [
-			{ obj: <TitleScene />, key: 'TitleScene' },
-			{ obj: <WhatisNomadScene />, key: 'WhatisNomadScene' },
-			{ obj: <ImagineScene />, key: 'ImagineScene' },
-			{ obj: <Imagine2Scene />, key: 'Imagine2Scene' },
-			{ obj: <Imagine3Scene />, key: 'Imagine3Scene' },
-			{ obj: <VoiceScene />, key: 'VoiceScene' },
-			{ obj: <Voice2Scene />, key: 'Voice2Scene' },
-			// { obj: <InteractiveMapScene />, key: 'InteractiveMapScene' },
+			{ obj: TitleScene, key: 'TitleScene' },
+			{ obj: WhatisNomadScene, key: 'WhatisNomadScene' },
+			{ obj: ImagineScene, key: 'ImagineScene' },
+			{ obj: Imagine2Scene, key: 'Imagine2Scene' },
+			{ obj: Imagine3Scene, key: 'Imagine3Scene' },
+			{ obj: VoiceScene, key: 'VoiceScene' },
+			{ obj: Voice2Scene, key: 'Voice2Scene' },
+			{ obj: InteractiveMapScene, key: 'InteractiveMapScene' },
 		]
 	}
 
@@ -68,19 +68,20 @@ let renderScenes = (current, scenes) => {
 	return map((scene, i)  => {
 		let hideStyle = {
 			opacity: 0,
-			transition: 'opacity 0.5s'
+			transition: 'opacity 1.0s'
 		}
 
 		let showStyle = {
-			opacity: 1
+			opacity: 1,
+			transition: 'opacity 1.0s'
 		}
 
-		let style = showStyle
-		if (i < current) { style = hideStyle }
+		let style = hideStyle
+		if (i === current) { style = showStyle }
 
 		return (
 			<div style={style} key={scene.key}>
-				{ scene.obj }
+				{ React.createElement(scene.obj, {active: i === current }) }
 			</div>
 		)
 	}, scenes)

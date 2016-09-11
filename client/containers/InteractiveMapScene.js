@@ -19,38 +19,6 @@ function mapStateToProps(state, ownProps) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    startScenes: function() {
-
-      const solar0 = sceneObjects[0]
-      const solar1 = sceneObjects[1]
-
-      // give each node and connection the ability to dispatch
-      R.forEach((obj) => {
-        obj.setDispatch(dispatch)
-      }, sceneObjects)
-
-      // set the solar panels to listen to firebase events
-      listenFirebase(sceneObjects[0], sceneObjects[1])
-
-      const initSolarPanels = () => {
-        solar0.activate()
-        solar1.activate()
-      }
-
-      const initScene = () => {
-        console.log('scene about to init')
-        setTimeout(() => {
-          initSolarPanels()
-        }, 1000)
-
-        setTimeout(() => {
-          sceneObjects[6].activate(0, 'NORMAL')
-        }, 12000)
-      }
-
-      setupObjects(initScene).then(initScene)
-    },
-
     helpers: {
       // these are curried, configure with sceneObjects
       connectionInputId: connectionInputId(sceneObjects),
@@ -61,7 +29,38 @@ function mapDispatchToProps(dispatch) {
 
 class InteractiveMapScene extends Component {
   componentDidMount() {
-    this.props.startScenes()
+    this.startScene()
+  }
+
+  startScene() {
+    const solar0 = sceneObjects[0]
+    const solar1 = sceneObjects[1]
+
+    // give each node and connection the ability to dispatch
+    R.forEach((obj) => {
+      obj.setDispatch(dispatch)
+    }, sceneObjects)
+
+    // set the solar panels to listen to firebase events
+    listenFirebase(sceneObjects[0], sceneObjects[1])
+
+    const initSolarPanels = () => {
+      solar0.activate()
+      solar1.activate()
+    }
+
+    const initScene = () => {
+      console.log('scene about to init')
+      setTimeout(() => {
+        initSolarPanels()
+      }, 1000)
+
+      setTimeout(() => {
+        sceneObjects[6].activate(0, 'NORMAL')
+      }, 12000)
+    }
+
+    setupObjects(initScene).then(initScene)
   }
 
   render() {
