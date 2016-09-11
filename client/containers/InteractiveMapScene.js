@@ -7,7 +7,7 @@ import SfMapComponent from './../components/SfMapComponent'
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { listenFirebase } from './../reducers/firebase'
-import { sceneObjects, setupObjects } from './../scenes/sceneObjects'
+import { sceneObjects, setupObjects } from './../scenes/fullScene'
 import { connectionInputId, connectionOutputId } from './../scenes/sceneHelpers'
 
 
@@ -38,7 +38,7 @@ class InteractiveMapScene extends Component {
   componentWillMount() {
     this.props.initScene()
   }
-  
+
   render() {
     if (this.props.active) { startScene() } // note: wrapped in R.once so only started once
     return (
