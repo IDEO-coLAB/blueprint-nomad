@@ -48,7 +48,7 @@ class InteractiveMapScene extends Component {
 
     if (this.props.active) { startScene() } // note: wrapped in R.once so only started once
     return (
-      <div>
+      <div style={style}>
         <SfMapComponent />
         <NodesRenderComponent 
           sceneDataObjects={this.props.sceneState.scenes[1].objects} 

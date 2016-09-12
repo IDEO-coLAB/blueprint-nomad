@@ -30,12 +30,12 @@ class App extends Component {
 		this.currentScene = 0
 		this.scenes = [
 			{ obj: TitleScene, key: 'TitleScene' },
-			// { obj: WhatisNomadScene, key: 'WhatisNomadScene' },
-			// { obj: ImagineScene, key: 'ImagineScene' },
-			// { obj: Imagine2Scene, key: 'Imagine2Scene' },
-			// { obj: Imagine3Scene, key: 'Imagine3Scene' },
-			// { obj: VoiceScene, key: 'VoiceScene' },
-			// { obj: Voice2Scene, key: 'Voice2Scene' },
+			{ obj: WhatisNomadScene, key: 'WhatisNomadScene' },
+			{ obj: ImagineScene, key: 'ImagineScene' },
+			{ obj: Imagine2Scene, key: 'Imagine2Scene' },
+			{ obj: Imagine3Scene, key: 'Imagine3Scene' },
+			{ obj: VoiceScene, key: 'VoiceScene' },
+			{ obj: Voice2Scene, key: 'Voice2Scene' },
 			{ obj: InteractiveThreeNodeMapScene, key: 'InteractiveThreeNodeMapScene' },
 			{ obj: InteractiveFullMapScene, key: 'InteractiveFullMapScene' }
 		]
@@ -47,7 +47,9 @@ class App extends Component {
 	}
 
 	previousScene() {
-		this.currentScene = (this.currentScene - 1) % R.length(this.scenes)
+		debugger
+		let len = R.length(this.scenes)
+		this.currentScene = (this.currentScene + len - 1) % len
 		this.forceUpdate()
 	}
 
@@ -74,8 +76,8 @@ let renderScenes = (current, scenes) => {
 		}
 
 		let showStyle = {
-			opacity: 1,
-			transition: 'opacity 1.0s'
+			opacity: 1
+			// transition: 'opacity 1.0s'
 		}
 
 		let style = hideStyle
