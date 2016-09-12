@@ -4,7 +4,8 @@ const SerialPort = require("serialport")
 const http = require('http')
 
 const serverPort = 8000
-const devicePort = '/dev/tty.usbmodem1421'
+// const devicePort = '/dev/tty.usbmodem1421'
+const devicePort = '/dev/tty.usbmodem1411'
 const baudRate = 9600
 
 
