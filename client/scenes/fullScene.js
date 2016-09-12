@@ -119,7 +119,7 @@ class Node {
 		if (waiting) {
 			// this.state.state = MESSAGING
 			this.state.showCaption = true
-			this.state.caption = "Message received"
+			this.state.caption = "Received the weather predictions"
 			this.dispatchState()
 
 			let self = this
@@ -279,17 +279,17 @@ const SMART_METER_ICON = 'icon_smart_meters'
 const PEAKER_ICON = 'icon_peaker_plant'
 
 let solar1captions = {}
-solar1captions[NORMAL] = 'Solar: All sunny here :)'
-solar1captions[ALERT] = 'Solar: Clouds coming in!'
+solar1captions[NORMAL] = 'All sunny here  😎'
+solar1captions[ALERT] = 'Less sun at this panel 🙁'
 
 let solar2captions = {}
-solar2captions[NORMAL] = 'Solar: All sunny here :)'
-solar2captions[ALERT] = 'Solar: Clouds coming in!'
+solar2captions[NORMAL] = 'All sunny here 😎'
+solar2captions[ALERT] = 'Less sun at this panel 🙁'
 
 let energyPredictionCaptions = {}
-energyPredictionCaptions[NORMAL] = 'Prediction: Energy output is high'
-energyPredictionCaptions[PARTIAL_ALERT] = 'Prediciton: Energy output to drop by 50%'
-energyPredictionCaptions[ALERT] = 'Prediciton: Energy output to drop by 100%'
+energyPredictionCaptions[NORMAL] = 'Prediction: Energy output is high ☀️'
+energyPredictionCaptions[PARTIAL_ALERT] = 'Prediciton: Energy output to drop by 50%  🌤'
+energyPredictionCaptions[ALERT] = 'Prediciton: Energy output to drop by 100% 🌥'
 
 let energyMetersCaptions = {}
 energyMetersCaptions[NORMAL] = 'Meters: Load is low'
