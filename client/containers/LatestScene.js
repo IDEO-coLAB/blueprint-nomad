@@ -5,7 +5,6 @@ import R from 'ramda'
 import NodeComponent from './../components/NodeComponent'
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import BackgroundIMageComponent from './../components/BackgroundIMageComponent'
-import SfMapComponent from './../components/SfMapComponent'
 
 class Scene extends Component {
   render() {
@@ -20,8 +19,7 @@ class Scene extends Component {
 
     return (
     	<div style={style} >
-	    	<SfMapComponent />
-	      <BackgroundIMageComponent src="/assets/images/scenes/imagine-2.png" />
+	      <BackgroundIMageComponent src="/assets/images/scenes/latest.png" />
 	     </div>
     )
   }

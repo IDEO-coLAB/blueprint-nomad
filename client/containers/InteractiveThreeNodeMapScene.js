@@ -4,6 +4,7 @@ import R from 'ramda'
 
 import NodesRenderComponent from './../components/NodesRenderComponent'
 import SfMapComponent from './../components/SfMapComponent'
+import BackgroundIMageComponent from './../components/BackgroundIMageComponent'
 
 import { SCENE_NODE, SCENE_CONNECTION, RESTING, MESSAGING } from './../constants/constants'
 import { listenFirebase } from './../reducers/firebase'
@@ -52,8 +53,8 @@ class InteractiveMapScene extends Component {
         <SfMapComponent />
         <NodesRenderComponent 
           sceneDataObjects={this.props.sceneState.scenes[0].objects} 
-          helpers={this.props.helpers} 
-        />
+          helpers={this.props.helpers} />
+          <BackgroundIMageComponent src="/assets/images/scenes/voice.png" />
       </div>
     )
   }

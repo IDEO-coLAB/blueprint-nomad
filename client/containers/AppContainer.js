@@ -12,6 +12,7 @@ import VoiceScene from './../containers/VoiceScene'
 import Voice2Scene from './../containers/Voice2Scene'
 import InteractiveThreeNodeMapScene from './../containers/InteractiveThreeNodeMapScene'
 import InteractiveFullMapScene from './../containers/InteractiveFullMapScene'
+import LatestScene from './../containers/LatestScene'
 
 
 function mapStateToProps(state, ownProps) {
@@ -34,10 +35,11 @@ class App extends Component {
 			{ obj: ImagineScene, key: 'ImagineScene' },
 			{ obj: Imagine2Scene, key: 'Imagine2Scene' },
 			{ obj: Imagine3Scene, key: 'Imagine3Scene' },
-			{ obj: VoiceScene, key: 'VoiceScene' },
-			{ obj: Voice2Scene, key: 'Voice2Scene' },
+			// { obj: VoiceScene, key: 'VoiceScene' },
+			// { obj: Voice2Scene, key: 'Voice2Scene' },
 			{ obj: InteractiveThreeNodeMapScene, key: 'InteractiveThreeNodeMapScene' },
-			{ obj: InteractiveFullMapScene, key: 'InteractiveFullMapScene' }
+			{ obj: InteractiveFullMapScene, key: 'InteractiveFullMapScene' },
+			{ obj: LatestScene, key: 'LatestScene' }
 		]
 	}
 
@@ -47,7 +49,6 @@ class App extends Component {
 	}
 
 	previousScene() {
-		debugger
 		let len = R.length(this.scenes)
 		this.currentScene = (this.currentScene + len - 1) % len
 		this.forceUpdate()
