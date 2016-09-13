@@ -8,8 +8,8 @@ import { FIREBASE_DEMO_PAYLOAD, FIREBASE_DEMO_RELAX, NOTIFY_PARTICLE } from './a
 
 import { setLed } from './../utils/led'
 
-const LIGHT_0 = 'light-0'
-const LIGHT_1 = 'light-1'
+const LIGHT_0 = 'light-1'
+const LIGHT_1 = 'light-0'
 
 const ledMap = {
 	'light-0': 0,

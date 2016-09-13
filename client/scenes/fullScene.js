@@ -41,11 +41,11 @@ export const setupObjects = (replayFn) => {
 }
 
 export const ledMap = {
-	solar1: 1,
-	solar2: 0,
-	energyPrediction: 2,
-	energyMeters: 3,
-	needPeakerPlant: 4,
+	solar1: 3,
+	solar2: 1,
+	energyPrediction: 0,
+	energyMeters: 4,
+	needPeakerPlant: 2,
 	peakerPlant: 6
 }
 
