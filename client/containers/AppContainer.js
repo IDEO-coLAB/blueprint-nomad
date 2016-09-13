@@ -57,8 +57,8 @@ class App extends Component {
   render() {
   	let style = {
 		   position: 'absolute',
-		   height: '1080px',
-		   width: '1920px',
+		   height: '1200px',
+		   width: '2133px',
 		   left: 0,
 		   top: 0,
 		   backgroundColor: '#000000'
@@ -82,8 +82,8 @@ let renderScenes = (current, scenes) => {
 		position: 'absolute',
 		width: '1620px',
 		height: '1080px',
-		left: '150px',
-		top: '0px'
+		left: '256px',
+		top: '60px'
 	}
 
 	let hideStyle = {
