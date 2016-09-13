@@ -55,10 +55,19 @@ class App extends Component {
 	}
 
   render() {
+  	let style = {
+		   position: 'absolute',
+		   height: '1080px',
+		   width: '1920px',
+		   left: 0,
+		   top: 0,
+		   backgroundColor: '#000000'
+  	}
+
   	let self = this
   	// reverse renderScenes returned list because browser renders last in list on top
     return (
-    	<div>
+    	<div style={style}>
 	    	<MouseInputComponent 
 	    		leftMouseClicked={() => { self.nextScene() }}
 	    		rightMouseClicked={() => { self.previousScene() }} />
@@ -69,23 +78,35 @@ class App extends Component {
 }
 
 let renderScenes = (current, scenes) => {
+	let style = {
+		position: 'absolute',
+		width: '1620px',
+		height: '1080px',
+		left: '150px',
+		top: '0px'
+	}
+
+	let hideStyle = {
+		opacity: 0,
+		transition: 'opacity 1.0s'
+	}
+
+	let showStyle = {
+		opacity: 1
+		// transition: 'opacity 1.0s'
+	}
+
 	let map = R.addIndex(R.map)
 	return map((scene, i)  => {
-		let hideStyle = {
-			opacity: 0,
-			transition: 'opacity 1.0s'
+		let mergedStyle
+		if (i === current) { 
+			mergedStyle = R.merge(style, showStyle) 
+		} else {
+			mergedStyle = R.merge(style, hideStyle)
 		}
-
-		let showStyle = {
-			opacity: 1
-			// transition: 'opacity 1.0s'
-		}
-
-		let style = hideStyle
-		if (i === current) { style = showStyle }
 
 		return (
-			<div style={style} key={scene.key}>
+			<div style={mergedStyle} key={scene.key}>
 				{ React.createElement(scene.obj, {active: i === current }) }
 			</div>
 		)

@@ -51,10 +51,10 @@ class InteractiveMapScene extends Component {
     return (
       <div style={style}>
         <SfMapComponent />
+        <BackgroundIMageComponent src="/assets/images/scenes/voice.png" />
         <NodesRenderComponent 
           sceneDataObjects={this.props.sceneState.scenes[0].objects} 
           helpers={this.props.helpers} />
-          <BackgroundIMageComponent src="/assets/images/scenes/voice.png" />
       </div>
     )
   }

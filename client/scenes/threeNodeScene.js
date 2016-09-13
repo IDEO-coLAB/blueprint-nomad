@@ -287,9 +287,9 @@ solar2captions[NORMAL] = 'All sunny here 😎'
 solar2captions[ALERT] = 'Less sun at this panel 🙁'
 
 let energyPredictionCaptions = {}
-energyPredictionCaptions[NORMAL] = 'Prediction: Energy output is high'
-energyPredictionCaptions[PARTIAL_ALERT] = 'Prediciton: Energy output to drop by 50%'
-energyPredictionCaptions[ALERT] = 'Prediciton: Energy output to drop by 100%'
+energyPredictionCaptions[NORMAL] = 'Prediction: Energy output is high ☀️'
+energyPredictionCaptions[PARTIAL_ALERT] = 'Prediciton: Energy output to drop by 50%  🌤'
+energyPredictionCaptions[ALERT] = 'Prediciton: Energy output to drop by 100% 🌥'
 
 let energyMetersCaptions = {}
 energyMetersCaptions[NORMAL] = 'Meters: Load is low'

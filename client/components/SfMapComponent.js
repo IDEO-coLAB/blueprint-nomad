@@ -7,7 +7,6 @@ class SfMapComponent extends Component {
       position: 'absolute',
       left: 0,
       top: 0,
-      zIndex: -1,
       opacity: 1
     }
 

@@ -8,8 +8,17 @@ import BackgroundIMageComponent from './../components/BackgroundIMageComponent'
 
 class Scene extends Component {
   render() {
+  	 let style = {
+		   position: 'absolute',
+		   height: '1080px',
+		   width: '1620px',
+		   left: 150,
+		   top: 0
+  	}
+
+
     return (
-      <BackgroundIMageComponent style={{zIndex:100}} src="/assets/images/scenes/title.png" />
+      <BackgroundIMageComponent style={style} src="/assets/images/scenes/title.png" />
     )
   }
 }

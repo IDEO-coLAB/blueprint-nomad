@@ -6,8 +6,7 @@ class backgroundImageComponent extends Component {
     let style = {
       position: 'absolute',
       left: 0,
-      top: 0,
-      zIndex: -1,
+      top: 0
     }
 
     return (

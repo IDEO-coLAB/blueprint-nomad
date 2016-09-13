@@ -18,8 +18,14 @@ class NodesRenderComponent extends Component {
       R.map(renderNode,       R.filter(isNode,        allObjects))
     )
 
+    let style = {
+      position: 'absolute',
+      left: 0,
+      top: 0
+    }
+
     return (
-      <div>
+      <div style={style}>
         <svg width="1620" height="1080" >
           { renderedNodes }
         </svg>
